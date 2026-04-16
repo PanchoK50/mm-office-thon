@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# playwright browser automation
+.playwright-mcp/
+
+# sisyphus orchestration (keep plans and evidence, ignore temp files)
+.sisyphus/boulder.json
+.sisyphus/notepads/
+.sisyphus/*
+opencode.json
