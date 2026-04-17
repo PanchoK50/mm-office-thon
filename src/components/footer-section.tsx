@@ -2,11 +2,8 @@ export function FooterSection() {
   return (
     <footer className="border-t border-border px-6 py-8">
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-3 text-center text-sm text-muted-foreground">
-        <p>
-          <span className="font-semibold text-foreground">
-            manage<span className="text-accent">&</span>more
-          </span>
-          {" "}&mdash; UnternehmerTUM GmbH
+        <p className="font-semibold text-foreground">
+          manage<span className="text-accent">&</span>more
         </p>
         <div className="flex gap-4 text-xs">
           <a

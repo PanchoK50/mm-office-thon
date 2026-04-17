@@ -91,8 +91,18 @@ export async function HeroSection({ campaign }: HeroSectionProps) {
               </p>
             </div>
 
-            <div id="support">
+            <div id="support" className="flex flex-col gap-3">
               <HeroCTA />
+              <p className="text-sm text-muted-foreground">
+                Questions? Reach out to{" "}
+                <a href="tel:+491638737358" className="font-medium text-foreground hover:text-accent">
+                  David Köthnig
+                </a>{" "}
+                <span className="text-xs">(G43)</span>{" "}
+                <a href="tel:+491638737358" className="hover:text-accent">
+                  +49 163 8737358
+                </a>
+              </p>
             </div>
           </div>
 
