@@ -23,7 +23,7 @@ export const SPONSORING_TIERS: SponsoringTier[] = [
     benefits: [
       "Room permanently bears your name",
       "Custom branding: your logo and design in the room",
-      "Daily visibility to every founder, investor, and applicant",
+      "Daily visibility to every MM scholar, future founder, and potential employee",
       "Prominent placement on the Wall of Fame",
     ],
   },
@@ -60,7 +60,7 @@ export const SPONSORING_TIERS: SponsoringTier[] = [
     taken: 0,
     benefits: [
       "Included in a shared artwork installation",
-      "A fingerprint in M&M style with your name, company logo, and generation",
+      "A fingerprint in MM style with your name, company logo, and generation",
       "Permanently commemorated alongside all other contributors",
     ],
   },
@@ -93,7 +93,7 @@ export const ROOMS: Room[] = [
     sqm: 56.72,
     monthlyRent: 1353.34,
     sponsorGoal: 15_000,
-    sponsors: [{ name: "Lio", amount: 15_000 }],
+    sponsors: [{ name: "Lio", amount: 16_240 }],
     order: 1,
     imagePlaceholder: null,
   },
@@ -106,7 +106,7 @@ export const ROOMS: Room[] = [
     sponsorGoal: 15_000,
     sponsors: [
       { name: "Thomas", amount: 10_000 },
-      { name: "Anonymous", amount: 5_000, anonymous: true },
+      { name: "Alumni Association", amount: 5_000 },
     ],
     order: 2,
     imagePlaceholder: null,
