@@ -35,16 +35,16 @@ export function MilestoneProgressBar({
       <div className="mb-3 flex items-end justify-between">
         <div>
           <span className="text-2xl font-bold sm:text-3xl">{formatEUR(current)}</span>
-          <span className="ml-2 text-muted-foreground">of {formatEUR(total)}</span>
+          <span className="ml-2 text-sm text-muted-foreground sm:text-base">of {formatEUR(total)}</span>
         </div>
         <span className="text-sm font-semibold text-accent">
           {percentage >= 100 ? "100% ✓" : `${percentage.toFixed(0)}%`}
         </span>
       </div>
 
-      <div className="relative pb-10">
+      <div className="relative pb-8 sm:pb-10">
         <div
-          className="relative h-5 w-full overflow-hidden rounded-full bg-secondary"
+          className="relative h-4 w-full overflow-hidden rounded-full bg-secondary sm:h-5"
           role="progressbar"
           aria-valuenow={Math.round(percentage)}
           aria-valuemin={0}
@@ -61,62 +61,64 @@ export function MilestoneProgressBar({
           />
         </div>
 
-        {milestones.map((milestone) => {
-          const nearStart = milestone.position <= 8
-          const nearEnd = milestone.position >= 92
-          return (
+        {milestones.map((milestone) => (
+          <div
+            key={milestone.label}
+            className="absolute top-0 flex flex-col items-center"
+            style={{
+              left: `${milestone.position}%`,
+              transform: "translateX(-50%)",
+            }}
+          >
             <div
-              key={milestone.label}
               className={cn(
-                "absolute top-0 flex flex-col",
-                nearStart ? "items-start" : nearEnd ? "items-end" : "items-center"
+                "h-4 w-4 shrink-0 rounded-full flex items-center justify-center sm:h-5 sm:w-5",
+                milestone.funded
+                  ? "bg-green-500"
+                  : "bg-secondary border border-border"
               )}
-              style={{
-                left: `${milestone.position}%`,
-                transform: nearStart
-                  ? "translateX(0)"
-                  : nearEnd
-                    ? "translateX(-100%)"
-                    : "translateX(-50%)",
-              }}
             >
-              <div
-                className={cn(
-                  "h-5 w-5 shrink-0 rounded-full flex items-center justify-center",
-                  milestone.funded
-                    ? "bg-green-500"
-                    : "bg-secondary border border-border"
-                )}
-              >
-                {milestone.funded && (
-                  <svg
-                    className="h-3 w-3 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={3}
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                )}
-              </div>
-              <span
-                className={cn(
-                  "mt-1.5 max-w-[80px] text-xs leading-tight",
-                  nearStart ? "text-left" : nearEnd ? "text-right" : "text-center",
-                  milestone.funded ? "font-medium text-green-600" : "text-muted-foreground"
-                )}
-              >
-                {milestone.label}
-              </span>
+              {milestone.funded && (
+                <svg
+                  className="h-2.5 w-2.5 text-white sm:h-3 sm:w-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              )}
             </div>
-          )
-        })}
+            <span
+              className={cn(
+                "mt-1 hidden text-[10px] leading-tight sm:block sm:text-xs",
+                milestone.funded ? "font-medium text-green-600" : "text-muted-foreground"
+              )}
+            >
+              {milestone.label}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap gap-x-3 gap-y-1 sm:hidden">
+        {milestones.map((milestone, i) => (
+          <span
+            key={milestone.label}
+            className={cn(
+              "text-[10px]",
+              milestone.funded ? "font-medium text-green-600" : "text-muted-foreground"
+            )}
+          >
+            {i + 1}. {milestone.label} {milestone.funded ? "✓" : ""}
+          </span>
+        ))}
       </div>
     </div>
   )

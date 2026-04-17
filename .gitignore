@@ -42,6 +42,8 @@ next-env.d.ts
 
 # playwright browser automation
 .playwright-mcp/
+*.png
+!public/**/*.png
 
 # sisyphus orchestration (keep plans and evidence, ignore temp files)
 .sisyphus/boulder.json

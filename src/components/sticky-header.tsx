@@ -17,11 +17,11 @@ export function StickyHeader() {
 
   return (
     <>
-      <header
-        className={`fixed inset-x-0 top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md transition-transform duration-300 ${visible ? "translate-y-0" : "-translate-y-full"}`}
+      <div
+        className={`fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/90 backdrop-blur-md px-4 py-3 transition-transform duration-300 sm:bottom-auto sm:top-0 sm:border-b sm:border-t-0 ${visible ? "translate-y-0" : "translate-y-full sm:-translate-y-full"}`}
       >
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
-          <div className="flex items-center gap-3">
+        <div className="mx-auto flex max-w-5xl items-center justify-center gap-3 sm:justify-between">
+          <div className="hidden items-center gap-3 sm:flex">
             <Image
               src="/logos/mm-logo.webp"
               alt="manage&more"
@@ -40,14 +40,13 @@ export function StickyHeader() {
           </div>
 
           <Button
-            size="sm"
-            className="rounded-full bg-accent px-5 text-sm text-accent-foreground hover:bg-accent/90"
+            className="w-full rounded-full bg-accent px-6 text-accent-foreground hover:bg-accent/90 sm:w-auto"
             onClick={() => setModalOpen(true)}
           >
             Become a Founding Member
           </Button>
         </div>
-      </header>
+      </div>
 
       <DonationModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </>

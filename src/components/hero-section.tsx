@@ -15,8 +15,14 @@ export async function HeroSection({ campaign }: HeroSectionProps) {
   const top3Generations = stats.generationTotals.slice(0, 3)
   const last3Donations = stats.recentDonations.slice(0, 3)
 
-  const totalGoal = ROOMS.reduce((sum, r) => sum + r.sponsorGoal, 0)
+  const totalGoal = 93_000
   const percentage = Math.min((stats.total / totalGoal) * 100, 100)
+
+  const SHORT_LABELS: Record<string, string> = {
+    "Deep Work / Focus": "Deep Work",
+    "Incubation Space": "Incubation",
+    "Meeting Rooms": "Meeting",
+  }
 
   let cumulative = 0
   const milestones = ROOMS.map((room) => {
@@ -24,9 +30,15 @@ export async function HeroSection({ campaign }: HeroSectionProps) {
     const roomTotal = room.sponsors.reduce((s, sp) => s + sp.amount, 0)
     return {
       position: (cumulative / totalGoal) * 100,
-      label: room.name,
+      label: SHORT_LABELS[room.name] ?? room.name,
       funded: roomTotal >= room.sponsorGoal,
     }
+  })
+
+  milestones.push({
+    position: 100,
+    label: "Kaution",
+    funded: false,
   })
 
   return (

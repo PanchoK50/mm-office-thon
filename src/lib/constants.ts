@@ -148,6 +148,8 @@ export const ROOMS: Room[] = [
 
 export const TOTAL_MONTHLY_RENT = ROOMS.reduce((s, r) => s + r.monthlyRent, 0)
 
+export const KAUTION = 18_665.13
+
 export const ADDITIONAL_ROOMS = [
   { id: 3, sqm: 56.10, monthlyRent: 1338.54 },
   { id: 19, sqm: 42.20, monthlyRent: 1006.89 },
