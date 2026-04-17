@@ -24,7 +24,7 @@ export function StickyHeader() {
           <div className="hidden items-center gap-3 sm:flex">
             <Image
               src="/logos/mm-logo.webp"
-              alt="manage&more"
+              alt="Manage and More"
               width={80}
               height={28}
               className="h-7 w-auto"

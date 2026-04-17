@@ -441,7 +441,7 @@ export function DonationModal({
                 Transfer to Thomas Stiftung
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Thomas Stiftung supports manage&amp;more by renting the office
+                Thomas Stiftung supports Manage and More by renting the office
                 space for our community.
               </p>
             </div>

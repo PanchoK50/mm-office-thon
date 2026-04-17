@@ -49,7 +49,7 @@ export async function HeroSection({ campaign }: HeroSectionProps) {
             <div className="flex items-center gap-4">
               <Image
                 src="/logos/mm-logo.webp"
-                alt="manage&more"
+                alt="Manage and More"
                 width={120}
                 height={40}
                 className="h-10 w-auto"
@@ -82,10 +82,10 @@ export async function HeroSection({ campaign }: HeroSectionProps) {
             <div>
               <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
                 The first{" "}
-                <span className="text-accent">manage&amp;more Office</span>
+                <span className="text-accent">Manage and More Office</span>
               </h1>
               <p className="mt-3 text-lg text-muted-foreground">
-                For the first time in manage&amp;more history, we&apos;re building
+                For the first time in Manage and More history, we&apos;re building
                 our own space &mdash; a home for founders, ideas, and community at
                 Kunstlabor München.
               </p>

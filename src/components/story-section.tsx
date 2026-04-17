@@ -7,14 +7,14 @@ export function StorySection() {
         </h2>
         <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
           <p>
-            We are <span className="font-semibold text-foreground">manage&amp;more</span> &mdash;
+            We are <span className="font-semibold text-foreground">Manage and More</span> &mdash;
             a community of over 700 alumni, founders, and entrepreneurs built by
             UnternehmerTUM. For 15&nbsp;years we&apos;ve run workshops, launched
             startups, and supported each other &mdash; but we&apos;ve never had
             a place to call our own.
           </p>
           <p>
-            That changes now. For the first time in manage&amp;more history,
+            That changes now. For the first time in Manage and More history,
             we&apos;re creating a permanent home: coworking desks, incubation
             rooms, meeting spaces, and a community hub &mdash; all under one
             roof at <span className="font-semibold text-foreground">Kunstlabor München</span>.
