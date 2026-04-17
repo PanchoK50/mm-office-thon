@@ -7,14 +7,22 @@ export function StorySection() {
         </h2>
         <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
           <p>
-            The manage&more office at UnternehmerTUM is where our community
-            comes together &mdash; for workshops, startup projects, and the
-            everyday collaboration that turns ideas into companies.
+            We are <span className="font-semibold text-foreground">manage&amp;more</span> &mdash;
+            a community of over 700 alumni, founders, and entrepreneurs built by
+            UnternehmerTUM. For 15&nbsp;years we&apos;ve run workshops, launched
+            startups, and supported each other &mdash; but we&apos;ve never had
+            a place to call our own.
           </p>
           <p>
-            After years of heavy use, the space needs an upgrade: better
-            furniture, modern equipment, and a layout that supports the way we
-            actually work. This campaign funds that transformation.
+            That changes now. For the first time in manage&amp;more history,
+            we&apos;re creating a permanent home: coworking desks, incubation
+            rooms, meeting spaces, and a community hub &mdash; all under one
+            roof at <span className="font-semibold text-foreground">Kunstlabor München</span>.
+          </p>
+          <p>
+            This isn&apos;t a renovation &mdash; it&apos;s a founding moment.
+            With your support we can secure the rooms, build the space, and open
+            the doors to the next generation of founders.
           </p>
         </div>
       </div>

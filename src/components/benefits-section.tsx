@@ -1,76 +1,69 @@
-import { Award, MapPin, Calendar, Trophy, Key, Utensils, Star } from "lucide-react"
+import { Building2, DoorOpen, Award, Fingerprint } from "lucide-react"
+import { SPONSORING_TIERS } from "@/lib/constants"
+import { formatEUR } from "@/lib/utils"
 
-const benefits = [
-  {
-    icon: Award,
-    title: "Wall of Fame",
-    description:
-      "Your name on the office wall of fame. Fingerprint concept with colors based on amount.",
-  },
-  {
-    icon: MapPin,
-    title: "Room Naming",
-    description:
-      "Name a room after you. Sponsor a room for a year and it carries your name.",
-  },
-  {
-    icon: Calendar,
-    title: "Event Hosting",
-    description:
-      "Host events in the office. Book the space for your team events.",
-  },
-  {
-    icon: Trophy,
-    title: "First Hackathon",
-    description:
-      "Free Hackathon challenge. First hackathon in the new office — your challenge is on us.",
-  },
-  {
-    icon: Key,
-    title: "Early Access",
-    description:
-      "First keycards. Top 10 supporters get the first office keycards.",
-  },
-  {
-    icon: Utensils,
-    title: "Founding Dinner",
-    description:
-      "Exclusive founder dinner. Join the celebration dinner for all founding members.",
-  },
-]
+const tierIcons = [Building2, DoorOpen, Award, Fingerprint]
 
 export function BenefitsSection() {
   return (
     <section id="benefits" className="px-6 py-16 sm:py-20">
       <div className="mx-auto max-w-3xl">
-        <div className="mb-8 flex items-center gap-2">
-          <Star className="h-6 w-6 text-accent" aria-hidden="true" />
+        <div className="mb-8">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            Founding Members
+            Become a Sponsor
           </h2>
+          <p className="mt-2 text-base text-muted-foreground">
+            Choose your level of support &mdash; every tier makes the office
+            happen.
+          </p>
         </div>
-        <p className="mb-8 text-base text-muted-foreground">
-          Your support gets you these perks
-        </p>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {benefits.map((benefit) => {
-            const Icon = benefit.icon
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {SPONSORING_TIERS.map((tier, i) => {
+            const Icon = tierIcons[i]
+            const remaining =
+              tier.available !== null ? tier.available - tier.taken : null
+
             return (
               <div
-                key={benefit.title}
-                className="group flex flex-col gap-3 rounded-xl border border-border bg-card p-5 transition-colors hover:border-accent/40"
+                key={tier.id}
+                className="group flex flex-col gap-4 rounded-xl border border-border bg-card p-6 transition-colors hover:border-accent/40"
               >
-                <Icon
-                  className="h-5 w-5 text-accent/70 group-hover:text-accent"
-                  aria-hidden="true"
-                />
-                <h3 className="text-sm font-semibold leading-snug">
-                  {benefit.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {benefit.description}
-                </p>
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10">
+                      <Icon
+                        className="h-5 w-5 text-accent"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold leading-snug">
+                        {tier.name}
+                      </h3>
+                      {remaining !== null && (
+                        <span className="text-xs text-muted-foreground">
+                          {remaining} of {tier.available} remaining
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <span className="text-lg font-bold text-accent">
+                    {tier.price > 0 ? formatEUR(tier.price) : "< " + formatEUR(5000)}
+                  </span>
+                </div>
+
+                <ul className="space-y-1.5">
+                  {tier.benefits.map((benefit) => (
+                    <li
+                      key={benefit}
+                      className="flex items-start gap-2 text-sm text-muted-foreground"
+                    >
+                      <span className="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-accent/50" />
+                      {benefit}
+                    </li>
+                  ))}
+                </ul>
               </div>
             )
           })}

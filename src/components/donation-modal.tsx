@@ -284,13 +284,13 @@ export function DonationModal({
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3" role="group" aria-label="Donation tiers">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3" role="group" aria-label="Donation tiers">
               {DONATION_TIERS.map((tier) => (
                 <Button
                   key={tier}
                   variant={selectedAmount === tier ? "default" : "outline"}
                   size="lg"
-                  className="h-14 text-lg"
+                  className="h-14 text-base"
                   onClick={() => {
                     setSelectedAmount(tier)
                     setCustomAmount("")

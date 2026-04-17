@@ -1,13 +1,10 @@
-import { MapPin } from "lucide-react"
-
-const stats = [
-  { label: "5 Meeting Rooms" },
-  { label: "100+ sqm Open Space" },
-  { label: "Focus Work Areas" },
-  { label: "Startup Offices" },
-]
+import Image from "next/image"
+import { ROOMS, TOTAL_MONTHLY_RENT } from "@/lib/constants"
+import { formatEUR } from "@/lib/utils"
 
 export function FloorPlanSection() {
+  const totalSqm = ROOMS.reduce((s, r) => s + r.sqm, 0)
+
   return (
     <section id="floor-plan" className="px-6 py-16 sm:py-20">
       <div className="mx-auto max-w-3xl">
@@ -15,28 +12,34 @@ export function FloorPlanSection() {
           The Space
         </h2>
 
-        {/* Floor plan placeholder */}
-        <div className="mb-6 flex aspect-video items-center justify-center rounded-xl border-2 border-dashed border-border bg-card/50">
-          <div className="flex flex-col items-center gap-2 text-center">
-            <MapPin className="h-8 w-8 text-muted-foreground/40" aria-hidden="true" />
-            <p className="text-sm font-medium text-muted-foreground/60">
-              Floor plan coming soon
-            </p>
-          </div>
+        <div className="mb-6 overflow-hidden rounded-xl border border-border">
+          <Image
+            src="/grundriss.jpeg"
+            alt="Floor plan — 2nd floor, Kunstlabor München"
+            width={1200}
+            height={800}
+            className="w-full h-auto"
+            priority
+          />
         </div>
 
-        {/* Quick stats */}
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
-          {stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="flex items-center justify-center rounded-lg border border-border bg-card px-3 py-2 text-center"
-            >
-              <span className="text-xs font-medium text-muted-foreground sm:text-sm">
-                {stat.label}
-              </span>
-            </div>
-          ))}
+          <div className="flex flex-col items-center justify-center rounded-lg border border-border bg-card px-3 py-3 text-center">
+            <span className="text-lg font-bold text-foreground">{ROOMS.length}</span>
+            <span className="text-xs text-muted-foreground">Rooms</span>
+          </div>
+          <div className="flex flex-col items-center justify-center rounded-lg border border-border bg-card px-3 py-3 text-center">
+            <span className="text-lg font-bold text-foreground">{totalSqm.toFixed(0)} m²</span>
+            <span className="text-xs text-muted-foreground">Total Area</span>
+          </div>
+          <div className="flex flex-col items-center justify-center rounded-lg border border-border bg-card px-3 py-3 text-center">
+            <span className="text-lg font-bold text-foreground">{formatEUR(TOTAL_MONTHLY_RENT)}</span>
+            <span className="text-xs text-muted-foreground">Rent / month</span>
+          </div>
+          <div className="flex flex-col items-center justify-center rounded-lg border border-border bg-card px-3 py-3 text-center">
+            <span className="text-lg font-bold text-foreground">OG 2</span>
+            <span className="text-xs text-muted-foreground">Kunstlabor</span>
+          </div>
         </div>
       </div>
     </section>

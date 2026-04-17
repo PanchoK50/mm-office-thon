@@ -5,6 +5,7 @@ import { StorySection } from "@/components/story-section"
 import { BenefitsSection } from "@/components/benefits-section"
 import { GallerySection } from "@/components/gallery-section"
 import { FloorPlanSection } from "@/components/floor-plan-section"
+import { RoomProgressSection } from "@/components/room-progress-section"
 import { ScoreboardSection } from "@/components/scoreboard-section"
 import { GenerationRaceSection } from "@/components/generation-race-section"
 import { FooterSection } from "@/components/footer-section"
@@ -44,15 +45,19 @@ export default async function Home() {
 
       <hr className="mx-auto max-w-3xl border-border" />
 
-      <BenefitsSection />
-
-      <hr className="mx-auto max-w-3xl border-border" />
-
       <GallerySection />
 
       <hr className="mx-auto max-w-3xl border-border" />
 
       <FloorPlanSection />
+
+      <hr className="mx-auto max-w-3xl border-border" />
+
+      <BenefitsSection />
+
+      <hr className="mx-auto max-w-3xl border-border" />
+
+      <RoomProgressSection />
 
       <hr className="mx-auto max-w-3xl border-border" />
 

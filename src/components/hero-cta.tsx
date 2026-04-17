@@ -14,7 +14,7 @@ export function HeroCTA() {
         className="rounded-full bg-accent px-8 text-accent-foreground hover:bg-accent/90"
         onClick={() => setModalOpen(true)}
       >
-        Support the Office
+        Become a Founding Member
       </Button>
       <DonationModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </>

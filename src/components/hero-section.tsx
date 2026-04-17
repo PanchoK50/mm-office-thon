@@ -39,14 +39,30 @@ export async function HeroSection({ campaign }: HeroSectionProps) {
             />
           </div>
 
+          <nav className="flex gap-3">
+            <a
+              href="#story"
+              className="rounded-full border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:border-accent/40 hover:text-accent"
+            >
+              Discover the Office
+            </a>
+            <a
+              href="#support"
+              className="rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
+            >
+              Support Us
+            </a>
+          </nav>
+
           <div>
             <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-              manage&amp;more goes{" "}
-              <span className="text-accent">Kunstlabor</span>
+              The first{" "}
+              <span className="text-accent">manage&amp;more Office</span>
             </h1>
             <p className="mt-3 text-lg text-muted-foreground">
-              Help us transform our office into a creative space where ideas
-              come to life. Every contribution counts.
+              For the first time in manage&amp;more history, we&apos;re building
+              our own space &mdash; a home for founders, ideas, and community at
+              Kunstlabor München.
             </p>
           </div>
 
@@ -57,7 +73,7 @@ export async function HeroSection({ campaign }: HeroSectionProps) {
             </div>
           </div>
 
-          <div>
+          <div id="support">
             <HeroCTA />
           </div>
         </div>

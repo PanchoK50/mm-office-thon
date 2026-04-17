@@ -1,11 +1,11 @@
 import { ImageIcon } from "lucide-react"
 
 const placeholders = [
-  { label: "Open Space", span: "col-span-2 row-span-2 sm:col-span-2 sm:row-span-2" },
+  { label: "Coworking Space", span: "col-span-2 row-span-2 sm:col-span-2 sm:row-span-2" },
   { label: "Meeting Room", span: "" },
-  { label: "Focus Area", span: "" },
-  { label: "Startup Office", span: "" },
-  { label: "Community Lounge", span: "" },
+  { label: "Deep Work Area", span: "" },
+  { label: "Incubation Space", span: "" },
+  { label: "Common Space", span: "" },
 ]
 
 export function GallerySection() {
@@ -20,19 +20,18 @@ export function GallerySection() {
           {placeholders.map((item) => (
             <div
               key={item.label}
-              className={`group flex flex-col items-center justify-center gap-2 rounded-xl border border-border bg-card p-3 text-center transition-colors hover:border-accent/40 ${item.span}`}
+              className={`group flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-card/50 p-3 text-center transition-colors hover:border-accent/40 ${item.span}`}
             >
               <ImageIcon className="h-6 w-6 text-muted-foreground/40 group-hover:text-accent/60" aria-hidden="true" />
               <span className="text-xs font-medium text-muted-foreground/60 group-hover:text-muted-foreground">
                 {item.label}
               </span>
+              <span className="text-[10px] text-muted-foreground/40">
+                Coming soon
+              </span>
             </div>
           ))}
         </div>
-
-        <p className="mt-3 text-xs text-muted-foreground/50">
-          Placeholder slots &mdash; replace with real photos.
-        </p>
       </div>
     </section>
   )
