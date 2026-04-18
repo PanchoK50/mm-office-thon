@@ -10,8 +10,8 @@ const placeholders = [
 
 export function GallerySection() {
   return (
-    <section id="gallery" className="px-6 py-16 sm:py-20">
-      <div className="mx-auto max-w-3xl">
+    <section id="gallery" className="px-6 py-16 sm:py-20 lg:px-24">
+      <div className="max-w-3xl lg:max-w-none">
         <h2 className="mb-6 text-2xl font-bold tracking-tight sm:text-3xl">
           Vision
         </h2>

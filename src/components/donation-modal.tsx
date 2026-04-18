@@ -31,6 +31,7 @@ import { Button } from "@/components/ui/button"
 import { Balloons } from "@/components/ui/balloons"
 
 const MAX_NAME_LENGTH = 100
+const MAX_TELEPHONE_LENGTH = 32
 const MAX_TAGLINE_LENGTH = 120
 const MAX_FILE_SIZE = 5 * 1024 * 1024
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"]
@@ -181,6 +182,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
 
   // Step 2
   const [donorName, setDonorName] = useState("")
+  const [telephone, setTelephone] = useState("")
   const [generation, setGeneration] = useState("")
   const [donorMessage, setDonorMessage] = useState("")
   const [nameError, setNameError] = useState("")
@@ -261,6 +263,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
     setAmountInput("")
     setAmountError("")
     setDonorName("")
+    setTelephone("")
     setGeneration("")
     setDonorMessage("")
     setNameError("")
@@ -327,6 +330,17 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
       setNameError(`Name must be ${MAX_NAME_LENGTH} characters or less`)
       return
     }
+    const trimmedTelephone = telephone.trim()
+    if (!trimmedTelephone) {
+      setNameError("Please enter your telephone number")
+      return
+    }
+    if (trimmedTelephone.length > MAX_TELEPHONE_LENGTH) {
+      setNameError(
+        `Telephone must be ${MAX_TELEPHONE_LENGTH} characters or less`
+      )
+      return
+    }
     if (!generation) {
       setNameError("Please select your generation")
       return
@@ -335,6 +349,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
     setIsPending(true)
     const result = await createDonation({
       donor_name: trimmedName,
+      telephone: trimmedTelephone,
       amount,
       generation,
       message: donorMessage || undefined,
@@ -595,6 +610,27 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                   value={donorName}
                   onChange={(e) => {
                     setDonorName(e.target.value)
+                    setNameError("")
+                  }}
+                  className="h-11 w-full rounded-lg border border-border bg-background px-4 text-base outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent/70"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="donor-telephone" className="sr-only">
+                  Your telephone number
+                </label>
+                <input
+                  id="donor-telephone"
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  placeholder="Your telephone number"
+                  maxLength={MAX_TELEPHONE_LENGTH}
+                  required
+                  value={telephone}
+                  onChange={(e) => {
+                    setTelephone(e.target.value)
                     setNameError("")
                   }}
                   className="h-11 w-full rounded-lg border border-border bg-background px-4 text-base outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent/70"

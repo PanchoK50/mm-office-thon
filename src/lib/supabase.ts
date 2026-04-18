@@ -8,6 +8,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 export type Donation = {
   id: number
   donor_name: string
+  telephone: string
   amount: number
   message: string | null
   created_at: string

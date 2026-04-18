@@ -13,15 +13,15 @@ function timeAgo(dateStr: string) {
 }
 
 export function ScoreboardSection({ donations }: { donations: Donation[] }) {
-  const sorted = [...donations].sort((a, b) => {
-    if (a.amount === 0 && b.amount !== 0) return -1
-    if (b.amount === 0 && a.amount !== 0) return 1
-    return b.amount - a.amount
-  })
+  const pending = donations.filter((d) => d.amount === 0)
+  const ranked = donations
+    .filter((d) => d.amount !== 0)
+    .sort((a, b) => b.amount - a.amount)
+  const sorted = [...pending, ...ranked]
 
   return (
-    <section id="scoreboard" className="px-6 py-16 sm:py-20">
-      <div className="mx-auto max-w-3xl">
+    <section id="scoreboard" className="px-6 py-16 sm:py-20 lg:px-24">
+      <div className="max-w-3xl lg:max-w-none">
         <h2 className="mb-6 text-2xl font-bold tracking-tight sm:text-3xl">
           Supporters
         </h2>
@@ -36,29 +36,35 @@ export function ScoreboardSection({ donations }: { donations: Donation[] }) {
         ) : (
           <div className="space-y-2">
             {sorted.map((d, i) => {
-              const Icon = rankIcons[i] ?? null
+              const isPending = d.amount === 0
+              const rank = isPending ? -1 : i - pending.length
+              const Icon = isPending ? null : (rankIcons[rank] ?? null)
               return (
                 <div
                   key={d.id}
                   className={`flex items-center gap-3 rounded-xl border px-4 py-3 ${
-                    i < 3
-                      ? "border-accent/20 bg-accent/5"
-                      : "border-border bg-card"
+                    isPending
+                      ? "border-sky-500/30 bg-sky-500/5"
+                      : rank < 3
+                        ? "border-accent/20 bg-accent/5"
+                        : "border-border bg-card"
                   }`}
                 >
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary text-xs font-bold text-muted-foreground">
-                    {Icon ? (
+                    {isPending ? (
+                      <span className="text-sky-600 dark:text-sky-400">?</span>
+                    ) : Icon ? (
                       <Icon
                         className={`h-4 w-4 ${
-                          i === 0
+                          rank === 0
                             ? "text-yellow-500"
-                            : i === 1
+                            : rank === 1
                               ? "text-gray-400"
                               : "text-amber-600"
                         }`}
                       />
                     ) : (
-                      <span>#{i + 1}</span>
+                      <span>#{rank + 1}</span>
                     )}
                   </div>
 
@@ -90,8 +96,14 @@ export function ScoreboardSection({ donations }: { donations: Donation[] }) {
                   </div>
 
                    <div className="text-right">
-                     <p className="text-sm font-bold text-accent">
-                       {d.amount === 0 ? "X" : formatEUR(d.amount)}
+                     <p
+                       className={`text-sm font-bold ${
+                         isPending
+                           ? "text-sky-600 dark:text-sky-400"
+                           : "text-accent"
+                       }`}
+                     >
+                       {isPending ? "? €" : formatEUR(d.amount)}
                      </p>
                      <p className="text-[11px] text-muted-foreground/60">
                        {timeAgo(d.created_at)}

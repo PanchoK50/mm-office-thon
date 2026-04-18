@@ -1,7 +1,7 @@
 export function StorySection() {
   return (
-    <section id="story" className="px-6 py-16 sm:py-20">
-      <div className="mx-auto max-w-3xl">
+    <section id="story" className="px-6 py-16 sm:py-20 lg:px-24">
+      <div className="max-w-3xl lg:max-w-none">
         <h2 className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl">
           Why this matters
         </h2>

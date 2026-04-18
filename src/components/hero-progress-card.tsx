@@ -341,7 +341,7 @@ function RecentDonationsList({ donations }: { donations: HeroDonation[] }) {
                 </p>
               </div>
               <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
-                {formatEUR(d.amount)}
+                {d.amount === 0 ? "? €" : formatEUR(d.amount)}
               </span>
             </li>
           ))}

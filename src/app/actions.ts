@@ -7,6 +7,7 @@ import { GENERATIONS, MIN_CUSTOM_AMOUNT, MAX_CUSTOM_AMOUNT } from '@/lib/constan
 
 export async function createDonation(input: {
   donor_name: string
+  telephone: string
   amount: number
   generation: string
   message?: string
@@ -46,6 +47,21 @@ export async function createDonation(input: {
       }
     }
 
+    // Validate telephone
+    if (!input.telephone.trim()) {
+      return {
+        success: false,
+        error: 'Telephone is required',
+      }
+    }
+
+    if (input.telephone.trim().length > 32) {
+      return {
+        success: false,
+        error: 'Telephone must be 32 characters or less',
+      }
+    }
+
     // Validate generation
     if (!GENERATIONS.includes(input.generation)) {
       return {
@@ -62,6 +78,7 @@ export async function createDonation(input: {
       .from('donations')
       .insert({
         donor_name: input.donor_name.trim(),
+        telephone: input.telephone.trim(),
         amount: input.amount,
         generation: input.generation,
         message: input.message || null,
@@ -232,7 +249,7 @@ export async function getDonationStats(): Promise<{
     // Fetch all donations
     const { data: donations, error } = await supabase
       .from('donations')
-      .select('id, donor_name, amount, message, created_at, generation, screenshot_url, status, commitment_type')
+      .select('id, donor_name, telephone, amount, message, created_at, generation, screenshot_url, status, commitment_type')
       .order('created_at', { ascending: false })
 
     if (error) {

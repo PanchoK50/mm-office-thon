@@ -22,19 +22,25 @@ interface HeroSectionProps {
 export function HeroSection({ cardData }: HeroSectionProps) {
   return (
     <section className="bg-background">
-      {/* Top bar: logos flush left, "Making the MM Office reality" centered
-          as a bold Geist title with the brand cyan highlighting "MM Office".
-          This is the ONLY grey band on the page — everything else is black
-          or white. */}
-      <div className="bg-top-bar">
-        <div className="mx-auto flex max-w-[1440px] items-center gap-4 px-6 py-5 lg:pr-[392px]">
-          {/* Left: logos */}
-          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+      {/* Top bar: deep near-black with a brand-cyan accent hairline and a
+          soft radial highlight behind the centered title. */}
+      <div className="relative isolate overflow-hidden bg-[#0a0a0a]">
+        {/* Subtle radial glow centered behind the title */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 opacity-[0.18] bg-[radial-gradient(60%_120%_at_50%_50%,rgba(255,255,255,0.35)_0%,rgba(255,255,255,0)_60%)]"
+        />
+        {/* Top accent hairline in brand cyan */}
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-accent/70 to-transparent" />
+
+        <div className="mx-auto flex max-w-[1440px] items-center gap-4 px-6 py-5 lg:pl-24 lg:pr-[456px]">
+          {/* Left: logos with a thin gradient divider */}
+          <div className="flex shrink-0 items-center gap-3 sm:gap-4">
             <a
               href={MM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-opacity hover:opacity-80"
+              className="block transition-opacity hover:opacity-80"
               aria-label="Manage and More, opens in new tab"
             >
               <Image
@@ -42,21 +48,19 @@ export function HeroSection({ cardData }: HeroSectionProps) {
                 alt="Manage and More"
                 width={160}
                 height={56}
-                className="h-6 w-auto sm:h-8"
+                className="h-6 w-auto brightness-0 invert sm:h-8"
                 priority
               />
             </a>
             <span
-              className="text-xs text-muted-foreground"
               aria-hidden="true"
-            >
-              ×
-            </span>
+              className="h-6 w-px bg-gradient-to-b from-transparent via-white/30 to-transparent sm:h-7"
+            />
             <a
               href={KUNSTLABOR_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-opacity hover:opacity-80"
+              className="block transition-opacity hover:opacity-80"
               aria-label="Kunstlabor München, opens in new tab"
             >
               <Image
@@ -64,33 +68,37 @@ export function HeroSection({ cardData }: HeroSectionProps) {
                 alt="Kunstlabor München"
                 width={160}
                 height={56}
-                className="h-6 w-auto sm:h-8"
+                className="h-6 w-auto brightness-0 invert sm:h-8"
                 priority
               />
             </a>
           </div>
 
-          {/* Middle: bold sans-serif title, MM cyan highlight on the brand
-              words. Hidden on very narrow screens to avoid colliding with
-              the logos on the left. */}
-          <h1 className="hidden flex-1 text-center text-xl font-bold tracking-tight text-foreground sm:block md:text-2xl lg:text-3xl">
-            Making the <span className="text-accent">MM Office</span> reality
+          {/* Middle: title in white, MM cyan highlight on the brand words. */}
+          <h1 className="hidden flex-1 text-center text-xl font-semibold tracking-tight text-white sm:block md:text-2xl lg:text-[1.75rem]">
+            Making the{" "}
+            <span className="bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent">
+              MM Office
+            </span>{" "}
+            reality
           </h1>
 
-          {/* Right spacer, balances the logos so the tagline sits truly
-              centered in the available row. */}
+          {/* Right spacer, balances the logos so the title stays centered. */}
           <div
             aria-hidden="true"
             className="hidden shrink-0 sm:block"
             style={{ width: 180 }}
           />
         </div>
+
+        {/* Bottom hairline for a subtle separation from the hero body */}
+        <div className="h-px w-full bg-white/5" />
       </div>
 
       {/* Hero body: video + headline on the darker grey. The floating progress
           card sits on top of this on lg+, glowing against the grey. */}
       <div className="bg-hero-dark text-white">
-        <div className="mx-auto max-w-[1440px] px-6 py-12 sm:py-16 lg:pr-[392px]">
+        <div className="mx-auto max-w-[1440px] px-6 py-12 sm:py-16 lg:pl-24 lg:pr-[456px]">
           <iframe
             className="block aspect-video w-full border-0 bg-black"
             src="https://drive.google.com/file/d/1R4PnFAcEkt0ZDjw7D0_rq12c5fDHxIIl/preview"

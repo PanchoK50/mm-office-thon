@@ -7,8 +7,8 @@ export function FloorPlanSection() {
   const totalSqm = ROOMS.reduce((s, r) => s + r.sqm, 0)
 
   return (
-    <section id="floor-plan" className="px-6 py-16 sm:py-20">
-      <div className="mx-auto max-w-3xl">
+    <section id="floor-plan" className="px-6 py-16 sm:py-20 lg:px-24">
+      <div className="max-w-3xl lg:max-w-none">
         <h2 className="mb-6 text-2xl font-bold tracking-tight sm:text-3xl">
           The Space
         </h2>

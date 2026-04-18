@@ -38,8 +38,8 @@ export async function GenerationRaceSection() {
   const maxTotal = totals[0]?.total ?? 1
 
   return (
-    <section id="generation-race" className="px-6 py-16 sm:py-20">
-      <div className="mx-auto max-w-3xl">
+    <section id="generation-race" className="px-6 py-16 sm:py-20 lg:px-24">
+      <div className="max-w-3xl lg:max-w-none">
         <div className="mb-6">
           <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight sm:text-3xl">
             <Trophy className="h-6 w-6 text-accent" aria-hidden="true" />

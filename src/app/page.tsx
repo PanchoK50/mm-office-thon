@@ -96,23 +96,25 @@ export default async function Home() {
       <HeroSection cardData={cardData} />
 
       {/* Pre-rooms sections respect the sidebar column on lg+.
-          pr = card (360px) + gap (32px) = 392px. Wrapped in a max-w-[1440px]
-          container so left-aligned section content lines up with the
-          carousel heading and cards. */}
-      <div className="mx-auto max-w-[1440px] lg:pr-[392px]">
-        <hr className="divider-fade ml-6 max-w-3xl" />
+          pr = card (360px) + gap (96px = 6rem) = 456px so the gap between
+          the text and the donation card matches the 96px page-left padding
+          (sections use lg:px-24). Wrapped in a max-w-[1440px] container so
+          left-aligned section content lines up with the carousel heading
+          and cards. */}
+      <div className="mx-auto max-w-[1440px] lg:pr-[456px]">
+        <hr className="divider-fade mx-6 lg:mx-24" />
         <StorySection />
 
-        <hr className="divider-fade ml-6 max-w-3xl" />
+        <hr className="divider-fade mx-6 lg:mx-24" />
         <GallerySection />
 
-        <hr className="divider-fade ml-6 max-w-3xl" />
+        <hr className="divider-fade mx-6 lg:mx-24" />
         <FloorPlanSection />
 
-        <hr className="divider-fade ml-6 max-w-3xl" />
+        <hr className="divider-fade mx-6 lg:mx-24" />
         <BenefitsSection />
 
-        <hr className="divider-fade ml-6 max-w-3xl" />
+        <hr className="divider-fade mx-6 lg:mx-24" />
       </div>
 
       {/* RoomProgressSection renders full-width so its horizontal scroll row
@@ -121,28 +123,36 @@ export default async function Home() {
       <RoomProgressSection />
 
       {/* Post-rooms sections go back inside the safe zone. */}
-      <div className="mx-auto max-w-[1440px] lg:pr-[392px]">
-        <hr className="divider-fade ml-6 max-w-3xl" />
+      <div className="mx-auto max-w-[1440px] lg:pr-[456px]">
+        <hr className="divider-fade mx-6 lg:mx-24" />
         <ScoreboardSection donations={donations} />
 
-        <hr className="divider-fade ml-6 max-w-3xl" />
+        <hr className="divider-fade mx-6 lg:mx-24" />
         <GenerationRaceSection />
 
         <FooterSection />
       </div>
 
-      {/* Floating progress panel — always visible on lg+, regardless of scroll.
-          Pinned to the right edge of a notional 1440px content container so
-          the whole page feels centered on wide viewports. */}
-      <aside
-        className="fixed top-24 z-30 hidden w-[360px] lg:block"
+      {/* Progress panel — occupies the reserved right column on lg+ and
+          stays visible via position: sticky as the user scrolls. The outer
+          wrapper spans main's full height so the sticky child has room to
+          stick through the whole page. Pinned to the right edge of a
+          notional 1440px content container so the page feels centered on
+          wide viewports. */}
+      <div
+        className="pointer-events-none absolute inset-y-0 z-30 hidden w-[360px] lg:block"
         style={{
-          right: "max(1.5rem, calc((100vw - 1440px) / 2 + 1.5rem))",
+          right: "max(6rem, calc((100vw - 1440px) / 2 + 6rem))",
         }}
-        aria-label="Fundraising progress"
+        aria-hidden="true"
       >
-        <HeroProgressCard {...cardData} />
-      </aside>
+        <aside
+          className="pointer-events-auto sticky top-24"
+          aria-label="Fundraising progress"
+        >
+          <HeroProgressCard {...cardData} />
+        </aside>
+      </div>
     </main>
   )
 }

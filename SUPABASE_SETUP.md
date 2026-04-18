@@ -28,6 +28,11 @@ ADD COLUMN status text DEFAULT 'pending' CHECK (status IN ('pending','confirmed'
 -- Add commitment_type column (payment method type)
 ALTER TABLE donations
 ADD COLUMN commitment_type text DEFAULT 'transfer';
+
+-- Add telephone column (donor contact — required for new donations)
+-- Backfill existing rows with '' before enforcing NOT NULL.
+ALTER TABLE donations
+ADD COLUMN telephone text NOT NULL DEFAULT '';
 ```
 
 ### Verify Schema Changes

@@ -9,7 +9,7 @@ export function RoomProgressSection() {
   return (
     <section id="rooms" className="py-16 sm:py-20">
       {/* Heading — stays in the safe zone so it aligns with sibling sections */}
-      <div className="mx-auto mb-8 max-w-[1440px] px-6 lg:pr-[392px]">
+      <div className="mx-auto mb-8 max-w-[1440px] px-6 lg:pl-24 lg:pr-[456px]">
         <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
           Office Loading<span className="text-accent">...</span>
         </h2>
@@ -20,13 +20,14 @@ export function RoomProgressSection() {
 
       {/* Scroll row — full viewport width. On lg+ its right padding is wider
           than the floating progress card so the last card can scroll under
-          the card cleanly. Left padding matches the max-w-6xl gutter above
-          so card #1 lines up with the heading. */}
+          the card cleanly. Left padding matches the heading + section text
+          (px-6 inside the centered max-w-[1440px] container) so card #1
+          lines up with the heading and the body text above. */}
       <div
         className={cn(
           "flex snap-x snap-proximity gap-4 overflow-x-auto scroll-smooth pb-6",
           "pl-6 pr-6",
-          "lg:pl-[max(1.5rem,calc((100vw-1440px)/2))] lg:pr-[408px]"
+          "lg:pl-[max(6rem,calc((100vw-1440px)/2+6rem))] lg:pr-[480px]"
         )}
       >
         {sortedRooms.map((room, index) => {

@@ -63,8 +63,8 @@ const TIER_ICONS: Record<string, typeof Building2> = {
 
 export function BenefitsSection() {
   return (
-    <section id="benefits" className="px-6 py-16 sm:py-20">
-      <div className="mx-auto max-w-3xl">
+    <section id="benefits" className="px-6 py-16 sm:py-20 lg:px-24">
+      <div className="max-w-3xl lg:max-w-none">
         <div className="mb-8">
           <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
             Become a Sponsor
