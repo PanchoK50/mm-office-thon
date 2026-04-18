@@ -16,7 +16,7 @@ export function FloorPlanSection() {
         <div className="mb-6 overflow-hidden rounded-xl border border-border">
           <Image
             src="/grundriss.jpeg"
-            alt="Floor plan — 2nd floor, Kunstlabor München"
+            alt="Floor plan, 2nd floor, Kunstlabor München"
             width={1200}
             height={800}
             className="w-full h-auto"
@@ -49,7 +49,7 @@ export function FloorPlanSection() {
             <h3 className="text-lg font-semibold">Location</h3>
           </div>
           <p className="text-sm text-muted-foreground">
-            Kunstlabor 2 &mdash; Dachauer Str. 90, 80335 München
+            Kunstlabor 2, Dachauer Str. 90, 80335 München
           </p>
           <div className="overflow-hidden rounded-xl border border-border">
             <iframe

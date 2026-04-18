@@ -1,11 +1,11 @@
-import { ImageIcon } from "lucide-react"
+import Image from "next/image"
 
 const placeholders = [
-  { label: "Coworking Space", span: "col-span-2 row-span-2 sm:col-span-2 sm:row-span-2" },
-  { label: "Meeting Room", span: "" },
-  { label: "Deep Work Area", span: "" },
-  { label: "Incubation Space", span: "" },
-  { label: "Common Space", span: "" },
+  { label: "Coworking Space", src: "/office/room2.jpg", span: "col-span-2 row-span-2 sm:col-span-2 sm:row-span-2" },
+  { label: "Meeting Room", src: "/office/room4.jpg", span: "" },
+  { label: "Deep Work Area", src: "/office/room3.jpg", span: "" },
+  { label: "Incubation Space", src: "/office/room5.jpg", span: "" },
+  { label: "Common Space", src: "/office/room1.jpg", span: "" },
 ]
 
 export function GallerySection() {
@@ -20,15 +20,20 @@ export function GallerySection() {
           {placeholders.map((item) => (
             <div
               key={item.label}
-              className={`group flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-card/50 p-3 text-center transition-colors hover:border-accent/40 ${item.span}`}
+              className={`group relative overflow-hidden rounded-xl border border-border bg-card/50 ${item.span}`}
             >
-              <ImageIcon className="h-6 w-6 text-muted-foreground/40 group-hover:text-accent/60" aria-hidden="true" />
-              <span className="text-xs font-medium text-muted-foreground/60 group-hover:text-muted-foreground">
-                {item.label}
-              </span>
-              <span className="text-[10px] text-muted-foreground/40">
-                Coming soon
-              </span>
+              <Image
+                src={item.src}
+                alt={item.label}
+                fill
+                sizes="(min-width: 640px) 25vw, 50vw"
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                <span className="text-xs font-medium text-white">
+                  {item.label}
+                </span>
+              </div>
             </div>
           ))}
         </div>

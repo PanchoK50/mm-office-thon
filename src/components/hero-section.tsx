@@ -35,7 +35,7 @@ export function HeroSection({ cardData }: HeroSectionProps) {
               target="_blank"
               rel="noopener noreferrer"
               className="transition-opacity hover:opacity-80"
-              aria-label="Manage and More — opens in new tab"
+              aria-label="Manage and More, opens in new tab"
             >
               <Image
                 src="/logos/mm-logo.webp"
@@ -57,7 +57,7 @@ export function HeroSection({ cardData }: HeroSectionProps) {
               target="_blank"
               rel="noopener noreferrer"
               className="transition-opacity hover:opacity-80"
-              aria-label="Kunstlabor München — opens in new tab"
+              aria-label="Kunstlabor München, opens in new tab"
             >
               <Image
                 src="/logos/kunstlabor-logo.webp"
@@ -91,16 +91,12 @@ export function HeroSection({ cardData }: HeroSectionProps) {
           card sits on top of this on lg+, glowing against the grey. */}
       <div className="bg-hero-dark text-white">
         <div className="mx-auto max-w-[1440px] px-6 py-12 sm:py-16 lg:pr-[392px]">
-          <video
-            className="block aspect-video w-full bg-black object-cover"
-            src="/videos/mm-office.mov"
-            autoPlay
-            muted
-            loop
-            playsInline
-            controls
-            preload="metadata"
-            aria-label="Tour of the new Manage and More office at Kunstlabor"
+          <iframe
+            className="block aspect-video w-full border-0 bg-black"
+            src="https://drive.google.com/file/d/1R4PnFAcEkt0ZDjw7D0_rq12c5fDHxIIl/preview"
+            allow="autoplay"
+            allowFullScreen
+            title="Tour of the new Manage and More office at Kunstlabor"
           />
 
           <div className="mt-10 max-w-3xl">
@@ -110,7 +106,7 @@ export function HeroSection({ cardData }: HeroSectionProps) {
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
               For the first time in Manage and More history, we&apos;re building
-              our own office &mdash; a permanent home for founders, ideas, and
+              our own office, a permanent home for founders, ideas, and
               community at{" "}
               <a
                 href={KUNSTLABOR_URL}

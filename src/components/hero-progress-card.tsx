@@ -104,7 +104,7 @@ function MilestoneStrip({ milestones }: { milestones: HeroMilestone[] }) {
       {milestones.map((m) => {
         const pct = Math.min(100, (m.raised / m.goal) * 100)
         const done = m.raised >= m.goal
-        const title = `${m.label} — ${formatEUR(m.raised)} / ${formatEUR(m.goal)}`
+        const title = `${m.label}: ${formatEUR(m.raised)} / ${formatEUR(m.goal)}`
 
         if (done) {
           return (
@@ -318,7 +318,7 @@ function RecentDonationsList({ donations }: { donations: HeroDonation[] }) {
 
       {donations.length === 0 ? (
         <p className="text-xs text-muted-foreground">
-          No donations yet — be the first.
+          No donations yet. Be the first.
         </p>
       ) : (
         <ul className="space-y-2">

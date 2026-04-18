@@ -6,22 +6,54 @@ export function StorySection() {
           Why this matters
         </h2>
         <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
+        
           <p>
-            We are <span className="font-semibold text-foreground">Manage and More</span>‚
-            a community of over 700 alumni, founders, and entrepreneurs built by
-            UnternehmerTUM. For 15&nbsp;years we&apos;ve run workshops, launched
-            startups, and supported each other &mdash; but we&apos;ve never had
-            a place to call our own.
+            This changes with this office at{" "}
+            <span className="font-semibold text-foreground">Kunstlabor München</span>.
+            Here&apos;s what it unlocks:
           </p>
+          <ul className="space-y-2 pt-1">
+            <li className="flex items-start gap-3">
+              <span
+                className="mt-2 block h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+                aria-hidden="true"
+              />
+              <span>
+                <span className="font-semibold text-foreground">
+                  BDDD comes to the city.
+                </span>{" "}
+                No more Garching commute our weekly home moves into Munich.
+              </span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span
+                className="mt-2 block h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+                aria-hidden="true"
+              />
+              <span>
+                <span className="font-semibold text-foreground">
+                  A homebase for the community.
+                </span>{" "}
+                Coworking, incubation rooms, and meeting spaces the MM
+                crew finally under one roof.
+              </span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span
+                className="mt-2 block h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+                aria-hidden="true"
+              />
+              <span>
+                <span className="font-semibold text-foreground">
+                  A stage for our events.
+                </span>{" "}
+                Workshops, Pitch Nights and even the Semester
+                Opening Party hosted in a space that&apos;s actually ours.
+              </span>
+            </li>
+          </ul>
           <p>
-            That changes now. For the first time in Manage and More history,
-            we&apos;re creating a permanent home: coworking desks, incubation
-            rooms, meeting spaces, and a community all under one
-            roof at <span className="font-semibold text-foreground">Kunstlabor München</span>.
-          </p>
-          <p>
-            This isn&apos;t a renovation &mdash; it&apos;s a founding moment.
-            With your support we can secure the rooms, build the space, and open
+           With your support we secure the rooms, build the space, and open
             the doors to the next generation of founders.
           </p>
         </div>

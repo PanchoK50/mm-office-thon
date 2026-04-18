@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { ROOMS } from "@/lib/constants"
 import { formatEUR, cn } from "@/lib/utils"
 import { ImageIcon, Lock, CheckCircle2 } from "lucide-react"
@@ -46,7 +47,22 @@ export function RoomProgressSection() {
                     : "border-border opacity-60"
               )}
             >
-              <div className="relative flex aspect-video items-center justify-center bg-secondary/50">
+              <div className="relative flex aspect-video items-center justify-center overflow-hidden bg-secondary/50">
+                {room.imagePlaceholder ? (
+                  <Image
+                    src={room.imagePlaceholder}
+                    alt={room.name}
+                    fill
+                    sizes="256px"
+                    className={cn("object-cover", !isFunded && !isPartial && "opacity-60")}
+                  />
+                ) : (
+                  <div className="flex flex-col items-center gap-1 text-muted-foreground/25">
+                    <ImageIcon className="h-8 w-8" />
+                    <span className="text-[10px]">Coming soon</span>
+                  </div>
+                )}
+
                 <div className="absolute left-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-background/80 text-[10px] font-bold text-muted-foreground ring-1 ring-border">
                   {index + 1}
                 </div>
@@ -58,16 +74,11 @@ export function RoomProgressSection() {
                   </span>
                 )}
 
-                {!isFunded && !isPartial && (
+                {!isFunded && !isPartial && !room.imagePlaceholder && (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <Lock className="h-6 w-6 text-muted-foreground/20" />
                   </div>
                 )}
-
-                <div className="flex flex-col items-center gap-1 text-muted-foreground/25">
-                  <ImageIcon className="h-8 w-8" />
-                  <span className="text-[10px]">Coming soon</span>
-                </div>
               </div>
 
               <div className="flex flex-1 flex-col gap-3 p-4">

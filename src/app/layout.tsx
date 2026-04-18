@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Manage and More goes Kunstlabor",
   description:
-    "Help Manage and More fund the move to Kunstlabor — a better office space for our community of entrepreneurs and founders.",
+    "Help Manage and More fund the move to Kunstlabor, a better office space for our community of entrepreneurs and founders.",
   openGraph: {
     title: "Manage and More goes Kunstlabor",
     description:
-      "Help Manage and More fund the move to Kunstlabor — a better office space for our community of entrepreneurs and founders.",
+      "Help Manage and More fund the move to Kunstlabor, a better office space for our community of entrepreneurs and founders.",
     type: "website",
   },
 }

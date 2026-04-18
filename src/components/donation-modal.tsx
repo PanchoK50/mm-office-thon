@@ -487,7 +487,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
               />
               <p className="text-foreground">
                 <span className="font-semibold">Donate €50+</span> and you&apos;ll
-                be added to the Wall of Fame — fingerprint, name and generation
+                be added to the Wall of Fame: fingerprint, name and generation
                 in grey on the wall.
               </p>
             </div>
@@ -542,7 +542,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                 )}
                 {amount >= MIN_CUSTOM_AMOUNT && amount < 50 && (
                   <span className="text-muted-foreground">
-                    Thanks for your support — {formatEUR(amount)}
+                    Thanks for your support, {formatEUR(amount)}
                   </span>
                 )}
                 {amount > 0 && amount < MIN_CUSTOM_AMOUNT && (
@@ -632,7 +632,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                 </label>
                 <textarea
                   id="donor-message"
-                  placeholder="Short tagline shown on your funding page"
+                  placeholder="Short tagline shown under your donation"
                   maxLength={MAX_TAGLINE_LENGTH}
                   rows={2}
                   value={donorMessage}
@@ -714,7 +714,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
             </Button>
 
             <p className="text-center text-sm text-muted-foreground">
-              Once transferred, send us the confirmation screenshot — upload it
+              Once transferred, send us the confirmation screenshot. Upload it
               here or share via WhatsApp.
             </p>
 
@@ -767,7 +767,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                       <p className="text-foreground">
                         I,{" "}
                         <span className="font-semibold">
-                          {donorName || "—"}
+                          {donorName || "-"}
                         </span>
                         , hereby commit to transferring{" "}
                         <span className="font-semibold tabular-nums">
@@ -835,7 +835,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
             <div className="text-5xl" aria-hidden="true">
               🎉
             </div>
-            <h2 className="text-2xl font-bold">Thank you — you&apos;re in!</h2>
+            <h2 className="text-2xl font-bold">Thank you, you&apos;re in!</h2>
             <p className="mx-auto max-w-sm text-base leading-relaxed text-muted-foreground">
               Your contribution is{" "}
               <span className="font-semibold text-foreground">committed</span>.
@@ -987,7 +987,7 @@ function TierCard({
               className="invisible flex gap-1.5"
             >
               <Check className="mt-0.5 h-3 w-3 shrink-0" strokeWidth={2.5} />
-              <span>—</span>
+              <span>-</span>
             </li>
           )
         })}

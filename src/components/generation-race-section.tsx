@@ -54,7 +54,7 @@ export async function GenerationRaceSection() {
           <div className="rounded-xl border border-border bg-card px-6 py-12 text-center">
             <Users className="mx-auto mb-3 h-8 w-8 text-muted-foreground/30" aria-hidden="true" />
             <p className="text-muted-foreground">
-              No generation data yet &mdash; donate and represent yours!
+              No generation data yet donate and represent yours!
             </p>
           </div>
         ) : (

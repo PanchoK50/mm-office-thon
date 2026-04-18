@@ -70,7 +70,7 @@ export function BenefitsSection() {
             Become a Sponsor
           </h2>
           <p className="mt-2 text-base text-muted-foreground">
-            Choose your level of support — every tier makes the office happen.
+            Choose your level of support. Every tier makes the office happen.
           </p>
         </div>
 
@@ -131,9 +131,9 @@ export function BenefitsSection() {
                     </div>
                   </div>
                   <span className={cn("text-lg font-bold", theme.price)}>
-                    {tier.price > 0
+                    {typeof tier.price === "number"
                       ? formatEUR(tier.price)
-                      : "< " + formatEUR(5000)}
+                      : tier.price}
                   </span>
                 </div>
 

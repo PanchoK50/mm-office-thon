@@ -26,7 +26,7 @@ export function ScoreboardSection({ donations }: { donations: Donation[] }) {
           <div className="rounded-xl border border-border bg-card px-6 py-12 text-center">
             <Heart className="mx-auto mb-3 h-8 w-8 text-muted-foreground/30" aria-hidden="true" />
             <p className="text-muted-foreground">
-              No donations yet &mdash; be the first!
+              No donations yet be the first!
             </p>
           </div>
         ) : (
@@ -66,6 +66,15 @@ export function ScoreboardSection({ donations }: { donations: Donation[] }) {
                       {d.generation && (
                         <span className="shrink-0 rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
                           {d.generation}
+                        </span>
+                      )}
+                      {d.status === "confirmed" ? (
+                        <span className="shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                          received
+                        </span>
+                      ) : (
+                        <span className="shrink-0 rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-600 dark:text-amber-400">
+                          committed
                         </span>
                       )}
                     </div>

@@ -69,7 +69,7 @@ export const CONTRIBUTION_TIERS: ContributionTier[] = [
       subtitle: "Named after your startup / choice",
     },
     benefits: [
-      "Priority Access — key card first",
+      "Priority Access, key card first",
       "Photo on the Founding Member wall",
       "Fingerprint in blue on the Wall of Fame",
     ],
@@ -85,7 +85,7 @@ export const CONTRIBUTION_TIERS: ContributionTier[] = [
       subtitle: "Named after your startup / choice",
     },
     benefits: [
-      "Priority Access — key card first",
+      "Priority Access, key card first",
       "Photo on the Founding Member wall",
       "Fingerprint in gold at the centre of the wall",
     ],
@@ -102,7 +102,7 @@ export const CONTRIBUTION_TIERS: ContributionTier[] = [
       subtitle: "Named after your startup / choice",
     },
     benefits: [
-      "Priority Access — key card first",
+      "Priority Access, key card first",
       "Photo on the Founding Member wall",
       "Fingerprint on a metal disk at the wall's centre",
     ],
@@ -112,7 +112,7 @@ export const CONTRIBUTION_TIERS: ContributionTier[] = [
 export type SponsoringTier = {
   id: string
   name: string
-  price: number
+  price: number | "X"
   available: number | null
   taken: number
   benefits: string[]
@@ -160,7 +160,7 @@ export const SPONSORING_TIERS: SponsoringTier[] = [
   {
     id: "wall-of-fame",
     name: "Wall of Fame",
-    price: 0,
+    price: "X",
     available: null,
     taken: 0,
     benefits: [
@@ -206,7 +206,7 @@ export const ROOMS: Room[] = [
       { name: "Alumni Association", amount: 5_000 },
     ],
     order: 1,
-    imagePlaceholder: null,
+    imagePlaceholder: "/office/room1.jpg",
   },
   {
     id: 13,
@@ -217,7 +217,7 @@ export const ROOMS: Room[] = [
     sponsorGoal: 15_000,
     sponsors: [{ name: "Lio", amount: 16_240 }],
     order: 2,
-    imagePlaceholder: null,
+    imagePlaceholder: "/office/room2.jpg",
   },
   {
     id: 12,
@@ -228,7 +228,7 @@ export const ROOMS: Room[] = [
     sponsorGoal: 15_000,
     sponsors: [],
     order: 3,
-    imagePlaceholder: null,
+    imagePlaceholder: "/office/room3.jpg",
   },
   {
     id: 8,
@@ -239,7 +239,7 @@ export const ROOMS: Room[] = [
     sponsorGoal: 7_500,
     sponsors: [],
     order: 4,
-    imagePlaceholder: null,
+    imagePlaceholder: "/office/room4.jpg",
   },
   {
     id: 9,
@@ -250,7 +250,7 @@ export const ROOMS: Room[] = [
     sponsorGoal: 15_000,
     sponsors: [{ name: "Adrian", amount: 10_000 }],
     order: 5,
-    imagePlaceholder: null,
+    imagePlaceholder: "/office/room5.jpg",
   },
 ]
 
