@@ -20,16 +20,20 @@ export async function HeroSection() {
     "Meeting Rooms": "Meeting",
   }
 
-  let cumulative = 0
-  const milestones = ROOMS.map((room) => {
-    cumulative += room.sponsorGoal
+  const milestones = ROOMS.reduce<
+    { position: number; label: string; funded: boolean }[]
+  >((acc, room) => {
+    const cumulativeGoal = (acc[acc.length - 1]?.position ?? 0) * totalGoal / 100 + room.sponsorGoal
     const roomTotal = room.sponsors.reduce((s, sp) => s + sp.amount, 0)
-    return {
-      position: (cumulative / totalGoal) * 100,
-      label: SHORT_LABELS[room.name] ?? room.name,
-      funded: roomTotal >= room.sponsorGoal,
-    }
-  })
+    return [
+      ...acc,
+      {
+        position: (cumulativeGoal / totalGoal) * 100,
+        label: SHORT_LABELS[room.name] ?? room.name,
+        funded: roomTotal >= room.sponsorGoal,
+      },
+    ]
+  }, [])
 
   milestones.push({
     position: 100,

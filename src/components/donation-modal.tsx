@@ -236,6 +236,7 @@ export function DonationModal({
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
+      setCopied(false)
     }
   }
 
