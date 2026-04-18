@@ -3,16 +3,10 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import {
   Check,
-  Users,
-  Briefcase,
-  MessagesSquare,
-  Frame,
-  Fingerprint,
   Upload,
   MessageCircle,
   FileSignature,
   Zap,
-  Sparkles,
 } from "lucide-react"
 import {
   createDonation,
@@ -25,10 +19,17 @@ import {
   GENERATIONS,
   MIN_CUSTOM_AMOUNT,
   MAX_CUSTOM_AMOUNT,
+  BANK_DETAILS,
 } from "@/lib/constants"
 import { formatEUR, cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Balloons } from "@/components/ui/balloons"
+import {
+  TierCard,
+  TIER_THEME,
+  CARD_TIERS,
+  WallOfFameRow,
+} from "@/components/tier-card"
 
 const MAX_NAME_LENGTH = 100
 const MAX_TELEPHONE_LENGTH = 32
@@ -37,27 +38,6 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"]
 
 const LOI_DEADLINE_LABEL = "Friday, 24 April 2026"
-
-/** Every tier card renders this many benefit rows — shorter tiers get invisible
- *  placeholder rows so the divider + bullets line up across all cards. */
-const MAX_BENEFIT_ROWS = Math.max(
-  ...CONTRIBUTION_TIERS.map((t) => t.benefits.length)
-)
-
-/** Cards shown in the grid — Wall of Fame is handled as a disclaimer row. */
-const CARD_TIERS = CONTRIBUTION_TIERS
-  .filter((t) => t.id !== "wall")
-  // Display order requested by the user: Gold · Silver · Bronze · Founding.
-  .sort((a, b) => {
-    const order: Record<ContributionTier["id"], number> = {
-      gold: 0,
-      silver: 1,
-      bronze: 2,
-      founding: 3,
-      wall: 4,
-    }
-    return order[a.id] - order[b.id]
-  })
 
 /** Amount → tier id. Highest-threshold match wins. */
 function tierForAmount(n: number): ContributionTier["id"] | null {
@@ -72,99 +52,6 @@ function tierForAmount(n: number): ContributionTier["id"] | null {
 function tierById(id: ContributionTier["id"] | null): ContributionTier | null {
   if (!id) return null
   return CONTRIBUTION_TIERS.find((t) => t.id === id) ?? null
-}
-
-/**
- * Per-tier visual treatment — deliberately ONE hue per tier so nothing inside
- * the card introduces a competing colour. Fingerprint details live in the
- * benefits text, not as an icon, so the palette stays quiet.
- */
-const TIER_THEME: Record<
-  ContributionTier["id"],
-  {
-    dot: string // small colour tag next to the tier name
-    borderIdle: string
-    borderActive: string
-    ring: string
-    accentText: string
-    chipBg: string
-    tagBg: string
-    headlineBg: string // highlighted hero-benefit box
-    headlineBorder: string
-    headlineIcon: string
-  }
-> = {
-  gold: {
-    dot: "bg-amber-500",
-    borderIdle: "border-amber-300/60",
-    borderActive: "border-amber-500",
-    ring: "ring-amber-500/30",
-    accentText: "text-amber-700",
-    chipBg: "bg-amber-500/10",
-    tagBg: "bg-amber-500/15",
-    headlineBg: "bg-amber-500/5",
-    headlineBorder: "border-amber-500/30",
-    headlineIcon: "text-amber-600",
-  },
-  silver: {
-    dot: "bg-slate-500",
-    borderIdle: "border-slate-300/70",
-    borderActive: "border-slate-500",
-    ring: "ring-slate-500/30",
-    accentText: "text-slate-700",
-    chipBg: "bg-slate-500/10",
-    tagBg: "bg-slate-500/15",
-    headlineBg: "bg-slate-500/5",
-    headlineBorder: "border-slate-500/30",
-    headlineIcon: "text-slate-600",
-  },
-  bronze: {
-    dot: "bg-orange-700",
-    borderIdle: "border-orange-300/60",
-    borderActive: "border-orange-700",
-    ring: "ring-orange-700/30",
-    accentText: "text-orange-800",
-    chipBg: "bg-orange-700/10",
-    tagBg: "bg-orange-700/15",
-    headlineBg: "bg-orange-700/5",
-    headlineBorder: "border-orange-700/30",
-    headlineIcon: "text-orange-700",
-  },
-  founding: {
-    dot: "bg-neutral-900",
-    borderIdle: "border-neutral-300",
-    borderActive: "border-neutral-900",
-    ring: "ring-neutral-900/25",
-    accentText: "text-neutral-900",
-    chipBg: "bg-neutral-900/5",
-    tagBg: "bg-neutral-900/10",
-    headlineBg: "bg-neutral-900/5",
-    headlineBorder: "border-neutral-900/25",
-    headlineIcon: "text-neutral-900",
-  },
-  wall: {
-    dot: "bg-neutral-400",
-    borderIdle: "border-neutral-200",
-    borderActive: "border-neutral-400",
-    ring: "ring-neutral-400/25",
-    accentText: "text-neutral-700",
-    chipBg: "bg-neutral-500/10",
-    tagBg: "bg-neutral-500/15",
-    headlineBg: "bg-neutral-500/5",
-    headlineBorder: "border-neutral-400/40",
-    headlineIcon: "text-neutral-500",
-  },
-}
-
-const HEADLINE_ICON: Record<
-  ContributionTier["headline"]["icon"],
-  typeof Users
-> = {
-  community: Users,          // Gold: big, communal
-  office: Briefcase,         // Silver: professional workspace
-  meeting: MessagesSquare,   // Bronze: meeting / conversation
-  photo: Frame,              // Founding: photo on the wall
-  wall: Fingerprint,         // Wall of Fame: fingerprint mark
 }
 
 interface DonationModalProps {
@@ -426,7 +313,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
 
   async function handleCopyIBAN() {
     try {
-      await navigator.clipboard.writeText("IBAN_PLACEHOLDER")
+      await navigator.clipboard.writeText(BANK_DETAILS.iban)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
@@ -494,18 +381,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
             </div>
 
             {/* Wall-of-Fame disclaimer row */}
-            <div className="flex items-start gap-3 rounded-lg border border-dashed border-border bg-muted/40 px-4 py-3 text-sm">
-              <Fingerprint
-                className="mt-0.5 h-5 w-5 shrink-0 text-neutral-500"
-                strokeWidth={2}
-                aria-hidden="true"
-              />
-              <p className="text-foreground">
-                <span className="font-semibold">Donate €50+</span> and you&apos;ll
-                be added to the Wall of Fame: fingerprint, name and generation
-                in grey on the wall.
-              </p>
-            </div>
+            <WallOfFameRow />
 
             {/* Prominent amount input */}
             <div>
@@ -737,9 +613,9 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
 
             {/* Bank details box */}
             <div className="space-y-2 rounded-lg border border-border bg-muted/40 p-4 text-sm">
-              <Row label="Account holder" value="Thomas Stiftung" />
-              <Row label="IBAN" value="IBAN_PLACEHOLDER" mono />
-              <Row label="BIC" value="BIC_PLACEHOLDER" mono />
+              <Row label="Account holder" value={BANK_DETAILS.accountHolder} />
+              <Row label="IBAN" value={BANK_DETAILS.iban} mono />
+              <Row label="BIC" value={BANK_DETAILS.bic} mono />
               <Row label="Reference" value={referenceCode} mono />
               {derivedTier && <Row label="Tier" value={tierLabel} />}
               <Row label="Amount" value={formatEUR(amount)} emphasis />
@@ -896,138 +772,6 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
           </div>
         )}
       </div>
-    </div>
-  )
-}
-
-/* ---------------- Tier card ---------------- */
-
-function TierCard({
-  tier,
-  selected,
-  onSelect,
-}: {
-  tier: ContributionTier
-  selected: boolean
-  onSelect: () => void
-}) {
-  const theme = TIER_THEME[tier.id]
-  const HeadlineIcon = HEADLINE_ICON[tier.headline.icon]
-  const priceLabel =
-    tier.id === "founding" ? `${formatEUR(tier.price)}+` : formatEUR(tier.price)
-
-  return (
-    <div
-      role="radio"
-      aria-checked={selected}
-      tabIndex={0}
-      onClick={onSelect}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault()
-          onSelect()
-        }
-      }}
-      className={cn(
-        "group relative flex h-full cursor-pointer flex-col rounded-xl border bg-card p-4 transition-all duration-200",
-        "hover:-translate-y-0.5 hover:shadow-md",
-        selected
-          ? "border-accent shadow-md ring-2 ring-accent/20"
-          : "border-border shadow-sm"
-      )}
-    >
-      {/* Header: tier name (left), optional tag (right) */}
-      <div className="flex items-start justify-between gap-2">
-        <h3
-          className={cn(
-            "text-[11px] font-bold uppercase tracking-[0.08em]",
-            theme.accentText
-          )}
-        >
-          {tier.name}
-        </h3>
-        {tier.tag && (
-          <span
-            className={cn(
-              "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide",
-              theme.tagBg,
-              theme.accentText
-            )}
-          >
-            <Sparkles className="h-2.5 w-2.5" strokeWidth={2.5} aria-hidden />
-            {tier.tag}
-          </span>
-        )}
-      </div>
-
-      {/* Price */}
-      <p
-        className={cn(
-          "mt-1 text-2xl font-bold tabular-nums leading-none",
-          theme.accentText
-        )}
-      >
-        {priceLabel}
-      </p>
-
-      {/* Hero benefit — size pill + distinct icon + room type */}
-      <div className="mt-3 space-y-1.5">
-        {tier.headline.size && (
-          <span
-            className={cn(
-              "inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-bold tabular-nums",
-              theme.chipBg,
-              theme.accentText
-            )}
-          >
-            {tier.headline.size}
-          </span>
-        )}
-        <div className="flex items-start gap-2">
-          <HeadlineIcon
-            className={cn("mt-0.5 h-4 w-4 shrink-0", theme.headlineIcon)}
-            strokeWidth={2}
-            aria-hidden="true"
-          />
-          <div className="min-w-0">
-            <p className="text-sm font-semibold leading-snug text-foreground">
-              {tier.headline.title}
-            </p>
-            {tier.headline.subtitle && (
-              <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
-                {tier.headline.subtitle}
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Supporting benefits — pinned to bottom with a fixed row count so the
-          divider and every bullet line up horizontally across cards. */}
-      <ul className="mt-auto space-y-1 border-t border-border/60 pt-3 text-[11px] leading-snug text-muted-foreground">
-        {Array.from({ length: MAX_BENEFIT_ROWS }).map((_, i) => {
-          const benefit = tier.benefits[i]
-          return benefit ? (
-            <li key={benefit} className="flex gap-1.5">
-              <Check
-                className="mt-0.5 h-3 w-3 shrink-0"
-                strokeWidth={2.5}
-                aria-hidden="true"
-              />
-              <span>{benefit}</span>
-            </li>
-          ) : (
-            <li
-              key={`empty-${i}`}
-              aria-hidden="true"
-              className="invisible flex gap-1.5"
-            >
-              <Check className="mt-0.5 h-3 w-3 shrink-0" strokeWidth={2.5} />
-              <span>-</span>
-            </li>
-          )
-        })}
-      </ul>
     </div>
   )
 }

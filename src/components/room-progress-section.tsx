@@ -98,21 +98,23 @@ export function RoomProgressSection({ totalRaised }: { totalRaised: number }) {
                     {room.name}
                   </h3>
                   <div className="mt-1.5 flex flex-wrap gap-1">
-                    <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[10px] font-medium text-accent">
-                      {room.type}
-                    </span>
                     <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] text-muted-foreground">
                       {room.sqm} m²
                     </span>
                   </div>
                 </div>
 
-                <p className="text-xs text-muted-foreground">
-                  <span className="text-sm font-semibold text-foreground">
-                    {formatEUR(room.monthlyRent)}
-                  </span>
-                  {" "}/month
-                </p>
+                <div>
+                  <p className="text-xs text-muted-foreground">
+                    <span className="text-sm font-semibold text-foreground">
+                      {formatEUR(room.monthlyRent)}
+                    </span>
+                    {" "}/month
+                  </p>
+                  <p className="text-[10px] text-muted-foreground/70">
+                    + 3 month deposit
+                  </p>
+                </div>
 
                 <div className="mt-auto pt-1">
                   {isFunded ? (

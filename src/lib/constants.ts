@@ -7,6 +7,17 @@ export const GENERATIONS = Array.from({ length: 45 }, (_, i) => `G${i + 1}`)
 export const MIN_CUSTOM_AMOUNT = 10
 export const MAX_CUSTOM_AMOUNT = 50000
 
+/* ---------------- Bank details ---------------- */
+
+/* Thomas Stiftung is the legal entity that rents the office on behalf of
+   Manage and More and receives donations. Surfaced in the donation modal
+   and in the footer so visitors can transfer without opening the flow. */
+export const BANK_DETAILS = {
+  accountHolder: "Thomas Stiftung",
+  iban: "IBAN_PLACEHOLDER",
+  bic: "BIC_PLACEHOLDER",
+} as const
+
 /* ---------------- Contribution tiers (donation modal) ---------------- */
 
 export type ContributionTier = {
