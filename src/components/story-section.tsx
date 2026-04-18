@@ -7,7 +7,7 @@ export function StorySection() {
         </h2>
         <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
           <p>
-            We are <span className="font-semibold text-foreground">Manage and More</span> &mdash;
+            We are <span className="font-semibold text-foreground">Manage and More</span>‚
             a community of over 700 alumni, founders, and entrepreneurs built by
             UnternehmerTUM. For 15&nbsp;years we&apos;ve run workshops, launched
             startups, and supported each other &mdash; but we&apos;ve never had
