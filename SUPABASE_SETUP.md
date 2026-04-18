@@ -242,6 +242,16 @@ ORDER BY created_at DESC;
 
 ---
 
+## 5. Campaign Table Cleanup
+
+The `campaign` table is no longer used by the app. The fundraising goal is defined as a constant in code (`FUNDRAISING_GOAL` in `src/lib/constants.ts`) and the current total is computed from the `donations` table. You can safely drop the table:
+
+```sql
+DROP TABLE IF EXISTS campaign;
+```
+
+---
+
 ## Notes
 
 - All SQL commands should be executed in the Supabase dashboard SQL editor
@@ -251,3 +261,4 @@ ORDER BY created_at DESC;
 - The `commitment_type` column defaults to 'transfer' for payment method tracking
 - The `generation` column stores G1-G45 identifiers for donor generation tracking
 - The `screenshot_url` column stores the path to uploaded proof screenshots in the storage bucket
+- The fundraising total is always computed from the `donations` table — never stored as a static value

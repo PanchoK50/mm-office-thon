@@ -5,15 +5,6 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-export type Campaign = {
-  id: number
-  goal_amount: number
-  current_amount: number
-  title: string
-  description: string | null
-  updated_at: string
-}
-
 export type Donation = {
   id: number
   donor_name: string

@@ -19,13 +19,11 @@ const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"]
 interface DonationModalProps {
   isOpen: boolean
   onClose: () => void
-  campaignGoal?: number
 }
 
 export function DonationModal({
   isOpen,
   onClose,
-  campaignGoal: _campaignGoal,
 }: DonationModalProps) {
   const [step, setStep] = useState(1)
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null)
@@ -224,9 +222,9 @@ export function DonationModal({
 
   function handleWhatsApp() {
     const whatsappText = encodeURIComponent(
-      `Hi! I just committed ${formatEUR(effectiveAmount)} to the Kunstlabor office fundraiser. Reference: ${referenceCode}`
+      `Hi! I just transferred ${formatEUR(effectiveAmount)} for the Kunstlabor office. My name is ${donorName} (${generation}). Here's my confirmation screenshot:`
     )
-    const whatsappUrl = `https://wa.me/PHONE_PLACEHOLDER?text=${whatsappText}`
+    const whatsappUrl = `https://wa.me/4915255839400?text=${whatsappText}`
     window.open(whatsappUrl, "_blank")
     setUploadSuccess(true)
     setTimeout(() => setStep(4), 500)

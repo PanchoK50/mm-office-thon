@@ -1,3 +1,5 @@
+export const FUNDRAISING_GOAL = 93_325
+
 export const DONATION_TIERS = [500, 1000, 5000, 7500, 15000] as const
 
 export const GENERATIONS = Array.from({ length: 45 }, (_, i) => `G${i + 1}`)
@@ -129,7 +131,7 @@ export const ROOMS: Room[] = [
     sqm: 53.44,
     monthlyRent: 1275.07,
     sponsorGoal: 15_000,
-    sponsors: [{ name: "Anonymous", amount: 5_000, anonymous: true }],
+    sponsors: [{ name: "Adrian", amount: 10_000 }],
     order: 4,
     imagePlaceholder: null,
   },

@@ -4,18 +4,14 @@ import { HeroCTA } from "@/components/hero-cta"
 import { getDonationStats } from "@/app/actions"
 import { formatEUR } from "@/lib/utils"
 import { ROOMS } from "@/lib/constants"
-import type { Campaign } from "@/lib/supabase"
+import { FUNDRAISING_GOAL } from "@/lib/constants"
 
-interface HeroSectionProps {
-  campaign: Campaign | null
-}
-
-export async function HeroSection({ campaign }: HeroSectionProps) {
+export async function HeroSection() {
   const stats = await getDonationStats()
   const top3Generations = stats.generationTotals.slice(0, 3)
   const last3Donations = stats.recentDonations.slice(0, 3)
 
-  const totalGoal = 93_000
+  const totalGoal = FUNDRAISING_GOAL
   const percentage = Math.min((stats.total / totalGoal) * 100, 100)
 
   const SHORT_LABELS: Record<string, string> = {

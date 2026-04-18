@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase"
-import type { Campaign, Donation } from "@/lib/supabase"
+import type { Donation } from "@/lib/supabase"
 import { HeroSection } from "@/components/hero-section"
 import { StorySection } from "@/components/story-section"
 import { BenefitsSection } from "@/components/benefits-section"
@@ -12,15 +12,6 @@ import { FooterSection } from "@/components/footer-section"
 
 export const revalidate = 60
 
-async function getCampaign(): Promise<Campaign | null> {
-  const { data } = await supabase
-    .from("campaign")
-    .select("*")
-    .eq("id", 1)
-    .single()
-  return data
-}
-
 async function getDonations(): Promise<Donation[]> {
   const { data } = await supabase
     .from("donations")
@@ -30,14 +21,11 @@ async function getDonations(): Promise<Donation[]> {
 }
 
 export default async function Home() {
-  const [campaign, donations] = await Promise.all([
-    getCampaign(),
-    getDonations(),
-  ])
+  const donations = await getDonations()
 
   return (
     <main className="flex-1">
-      <HeroSection campaign={campaign} />
+      <HeroSection />
 
       <hr className="mx-auto max-w-3xl border-border" />
 
