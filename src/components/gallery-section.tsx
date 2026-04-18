@@ -1,11 +1,11 @@
 import Image from "next/image"
 
 const placeholders = [
-  { label: "Coworking Space", src: "/office/room2.jpg", span: "col-span-2 row-span-2 sm:col-span-2 sm:row-span-2" },
-  { label: "Meeting Room", src: "/office/room4.jpg", span: "" },
-  { label: "Deep Work Area", src: "/office/room3.jpg", span: "" },
-  { label: "Incubation Space", src: "/office/room5.jpg", span: "" },
-  { label: "Common Space", src: "/office/room1.jpg", span: "" },
+  { label: "Coworking Space", src: "/office/Coworking.png", span: "col-span-2 row-span-2 sm:col-span-2 sm:row-span-2" },
+  { label: "Meeting Room", src: "/office/Meeting.png", span: "" },
+  { label: "Deep Work Area", src: "/office/DeepWork.png", span: "" },
+  { label: "Incubation Space", src: "/office/Incubation.png", span: "" },
+  { label: "Common Space", src: "/office/Common.png", span: "" },
 ]
 
 export function GallerySection() {

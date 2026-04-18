@@ -1,4 +1,7 @@
-export const FUNDRAISING_GOAL = 93_325
+/* FUNDRAISING_GOAL is defined near the bottom of this file, after ROOMS,
+   because it's derived from the sum of each room's sponsorGoal. Each
+   sponsorGoal covers 12 months of rent + a 3-month security deposit
+   (= 15 × monthlyRent). */
 
 export const GENERATIONS = Array.from({ length: 45 }, (_, i) => `G${i + 1}`)
 export const MIN_CUSTOM_AMOUNT = 10
@@ -192,7 +195,14 @@ export type Room = {
 
 /* Ordered by relevance for fundraising fill-order (community → incubation).
    The hero milestone strip pours donations across ROOMS in this array order,
-   and room-progress-section sorts by `order` — both pick this sequence up. */
+   and room-progress-section sorts by `order` — both pick this sequence up.
+
+   Each `sponsorGoal` covers the full first-year cost of that room:
+   12 months of rent + a 3-month security deposit = 15 × monthlyRent. */
+const MONTHS_TO_FUND = 15 // 12 months rent + 3 months deposit (Kaution)
+const fullYearWithDeposit = (monthlyRent: number) =>
+  monthlyRent * MONTHS_TO_FUND
+
 export const ROOMS: Room[] = [
   {
     id: 14,
@@ -200,7 +210,7 @@ export const ROOMS: Room[] = [
     type: "Title Room",
     sqm: 56.04,
     monthlyRent: 1337.11,
-    sponsorGoal: 15_000,
+    sponsorGoal: fullYearWithDeposit(1337.11),
     sponsors: [
       { name: "Thomas", amount: 10_000 },
       { name: "Alumni Association", amount: 5_000 },
@@ -214,7 +224,7 @@ export const ROOMS: Room[] = [
     type: "Title Room",
     sqm: 56.72,
     monthlyRent: 1353.34,
-    sponsorGoal: 15_000,
+    sponsorGoal: fullYearWithDeposit(1353.34),
     sponsors: [{ name: "Lio", amount: 16_240 }],
     order: 2,
     imagePlaceholder: "/office/room2.jpg",
@@ -225,7 +235,7 @@ export const ROOMS: Room[] = [
     type: "Title Room",
     sqm: 42.12,
     monthlyRent: 1004.98,
-    sponsorGoal: 15_000,
+    sponsorGoal: fullYearWithDeposit(1004.98),
     sponsors: [],
     order: 3,
     imagePlaceholder: "/office/room3.jpg",
@@ -236,7 +246,7 @@ export const ROOMS: Room[] = [
     type: "Meeting Room",
     sqm: 52.44,
     monthlyRent: 1251.21,
-    sponsorGoal: 7_500,
+    sponsorGoal: fullYearWithDeposit(1251.21),
     sponsors: [],
     order: 4,
     imagePlaceholder: "/office/room4.jpg",
@@ -247,7 +257,7 @@ export const ROOMS: Room[] = [
     type: "Title Room",
     sqm: 53.44,
     monthlyRent: 1275.07,
-    sponsorGoal: 15_000,
+    sponsorGoal: fullYearWithDeposit(1275.07),
     sponsors: [{ name: "Adrian", amount: 10_000 }],
     order: 5,
     imagePlaceholder: "/office/room5.jpg",
@@ -256,7 +266,7 @@ export const ROOMS: Room[] = [
 
 export const TOTAL_MONTHLY_RENT = ROOMS.reduce((s, r) => s + r.monthlyRent, 0)
 
-export const KAUTION = 18_665.13
+export const FUNDRAISING_GOAL = ROOMS.reduce((s, r) => s + r.sponsorGoal, 0)
 
 export const ADDITIONAL_ROOMS = [
   { id: 3, sqm: 56.10, monthlyRent: 1338.54 },

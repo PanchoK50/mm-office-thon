@@ -26,8 +26,9 @@ export function RoomProgressSection({ totalRaised }: { totalRaised: number }) {
       <div
         className={cn(
           "flex snap-x snap-proximity gap-4 overflow-x-auto scroll-smooth pb-6",
-          "pl-6 pr-6",
-          "lg:pl-[max(6rem,calc((100vw-1440px)/2+6rem))] lg:pr-[480px]"
+          "pl-6 pr-6 scroll-pl-6",
+          "lg:pl-[max(6rem,calc((100vw-1440px)/2+6rem))] lg:pr-[480px]",
+          "lg:scroll-pl-[max(6rem,calc((100vw-1440px)/2+6rem))]"
         )}
       >
         {sortedRooms.map((room, index) => {

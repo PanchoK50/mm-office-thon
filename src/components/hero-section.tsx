@@ -74,21 +74,7 @@ export function HeroSection({ cardData }: HeroSectionProps) {
             </a>
           </div>
 
-          {/* Middle: title in white, MM cyan highlight on the brand words. */}
-          <h1 className="hidden flex-1 text-center text-xl font-semibold tracking-tight text-white sm:block md:text-2xl lg:text-[1.75rem]">
-            Making the{" "}
-            <span className="bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent">
-              MM Office
-            </span>{" "}
-            reality
-          </h1>
-
-          {/* Right spacer, balances the logos so the title stays centered. */}
-          <div
-            aria-hidden="true"
-            className="hidden shrink-0 sm:block"
-            style={{ width: 180 }}
-          />
+          <div className="flex-1" />
         </div>
 
         {/* Bottom hairline for a subtle separation from the hero body */}
@@ -109,8 +95,11 @@ export function HeroSection({ cardData }: HeroSectionProps) {
 
           <div className="mt-10 max-w-3xl">
             <h1 className="text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-              Giving the community the home{" "}
-              <span className="whitespace-nowrap">it deserves.</span>
+              Making the{" "}
+              <span className="bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent">
+                MM Office
+              </span>{" "}
+              reality
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
               For the first time in Manage and More history, we&apos;re building

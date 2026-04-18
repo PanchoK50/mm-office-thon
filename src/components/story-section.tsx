@@ -10,7 +10,7 @@ export function StorySection() {
           <p>
             This changes with this office at{" "}
             <span className="font-semibold text-foreground">Kunstlabor München</span>.
-            Here&apos;s what it unlocks:
+           
           </p>
           <ul className="space-y-2 pt-1">
             <li className="flex items-start gap-3">
