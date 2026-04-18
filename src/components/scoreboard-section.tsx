@@ -13,7 +13,11 @@ function timeAgo(dateStr: string) {
 }
 
 export function ScoreboardSection({ donations }: { donations: Donation[] }) {
-  const sorted = [...donations].sort((a, b) => b.amount - a.amount)
+  const sorted = [...donations].sort((a, b) => {
+    if (a.amount === 0 && b.amount !== 0) return -1
+    if (b.amount === 0 && a.amount !== 0) return 1
+    return b.amount - a.amount
+  })
 
   return (
     <section id="scoreboard" className="px-6 py-16 sm:py-20">
@@ -87,7 +91,7 @@ export function ScoreboardSection({ donations }: { donations: Donation[] }) {
 
                    <div className="text-right">
                      <p className="text-sm font-bold text-accent">
-                       {formatEUR(d.amount)}
+                       {d.amount === 0 ? "X" : formatEUR(d.amount)}
                      </p>
                      <p className="text-[11px] text-muted-foreground/60">
                        {timeAgo(d.created_at)}

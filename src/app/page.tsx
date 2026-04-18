@@ -96,21 +96,23 @@ export default async function Home() {
       <HeroSection cardData={cardData} />
 
       {/* Pre-rooms sections respect the sidebar column on lg+.
-          pr = card (360px) + gap (32px) = 392px. */}
-      <div className="lg:pr-[392px]">
-        <hr className="divider-fade mx-auto max-w-3xl" />
+          pr = card (360px) + gap (32px) = 392px. Wrapped in a max-w-[1440px]
+          container so left-aligned section content lines up with the
+          carousel heading and cards. */}
+      <div className="mx-auto max-w-[1440px] lg:pr-[392px]">
+        <hr className="divider-fade ml-6 max-w-3xl" />
         <StorySection />
 
-        <hr className="divider-fade mx-auto max-w-3xl" />
+        <hr className="divider-fade ml-6 max-w-3xl" />
         <GallerySection />
 
-        <hr className="divider-fade mx-auto max-w-3xl" />
+        <hr className="divider-fade ml-6 max-w-3xl" />
         <FloorPlanSection />
 
-        <hr className="divider-fade mx-auto max-w-3xl" />
+        <hr className="divider-fade ml-6 max-w-3xl" />
         <BenefitsSection />
 
-        <hr className="divider-fade mx-auto max-w-3xl" />
+        <hr className="divider-fade ml-6 max-w-3xl" />
       </div>
 
       {/* RoomProgressSection renders full-width so its horizontal scroll row
@@ -119,11 +121,11 @@ export default async function Home() {
       <RoomProgressSection />
 
       {/* Post-rooms sections go back inside the safe zone. */}
-      <div className="lg:pr-[392px]">
-        <hr className="divider-fade mx-auto max-w-3xl" />
+      <div className="mx-auto max-w-[1440px] lg:pr-[392px]">
+        <hr className="divider-fade ml-6 max-w-3xl" />
         <ScoreboardSection donations={donations} />
 
-        <hr className="divider-fade mx-auto max-w-3xl" />
+        <hr className="divider-fade ml-6 max-w-3xl" />
         <GenerationRaceSection />
 
         <FooterSection />
