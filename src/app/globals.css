@@ -1,21 +1,49 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
-  --primary: #2563eb;
+  /* Brand tokens aligned with manageandmore.de CI. Cyan highlight stays.
+     Body is back to clean white. Only the top header band uses a soft grey
+     (exposed as .bg-top-bar). The hero band is near-black so the white card
+     floats in front of it with real contrast. */
+  --background: #ffffff;       /* rest of site — clean white */
+  --top-bar-bg: #e5e7eb;       /* gray-200 — ONLY the top header band */
+  --hero-dark:  #0a0a0a;       /* near-black — hero feature band */
+  --foreground: #0a0a0a;
+  --primary: #00a2cc;
   --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #334155;
-  --accent: #2563eb;
+  --secondary: #f3f4f6;        /* gray-100 */
+  --secondary-foreground: #0a0a0a;
+  --accent: #00a2cc;
   --accent-foreground: #ffffff;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --card: #f8fafc;
-  --card-foreground: #0f172a;
-  --border: #e2e8f0;
-  --ring: #2563eb;
+  --muted: #f3f4f4;
+  --muted-foreground: #6b7280; /* gray-500 */
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --border: #e5e7eb;           /* gray-200 — soft hairline on white */
+  --ring: #00a2cc;
   --destructive: #dc2626;
+}
+
+.bg-hero-dark {
+  background-color: var(--hero-dark);
+}
+
+.bg-top-bar {
+  background-color: var(--top-bar-bg);
+}
+
+/* Editorial divider — faded gradient hairline, inspired by manageandmore.de.
+   Use on <hr> elements or any full-width line element. */
+.divider-fade {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--border) 20%,
+    var(--border) 80%,
+    transparent
+  );
 }
 
 @theme inline {
@@ -49,8 +77,8 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 12px rgba(37, 99, 235, 0.15); }
-  50% { box-shadow: 0 0 24px rgba(37, 99, 235, 0.3); }
+  0%, 100% { box-shadow: 0 0 12px rgba(0, 162, 204, 0.15); }
+  50% { box-shadow: 0 0 24px rgba(0, 162, 204, 0.3); }
 }
 
 @keyframes shimmer {
@@ -76,5 +104,5 @@ body {
 }
 
 ::selection {
-  background: rgba(37, 99, 235, 0.2);
+  background: rgba(0, 162, 204, 0.2);
 }

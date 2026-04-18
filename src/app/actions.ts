@@ -188,6 +188,40 @@ export async function uploadScreenshot(
   }
 }
 
+export async function updateDonationCommitment(
+  donationId: number,
+  commitment_type: 'transfer' | 'loi'
+): Promise<{ success: true } | { success: false; error: string }> {
+  try {
+    if (!Number.isFinite(donationId) || donationId <= 0) {
+      return { success: false, error: 'Invalid donation id' }
+    }
+    if (commitment_type !== 'transfer' && commitment_type !== 'loi') {
+      return { success: false, error: 'Invalid commitment type' }
+    }
+
+    const { error } = await supabase
+      .from('donations')
+      .update({ commitment_type })
+      .eq('id', donationId)
+
+    if (error) {
+      return {
+        success: false,
+        error: `Failed to update commitment: ${error.message}`,
+      }
+    }
+
+    revalidatePath('/')
+    return { success: true }
+  } catch (err) {
+    return {
+      success: false,
+      error: `Unexpected error: ${err instanceof Error ? err.message : 'Unknown error'}`,
+    }
+  }
+}
+
 export async function getDonationStats(): Promise<{
   total: number
   count: number
@@ -246,8 +280,8 @@ export async function getDonationStats(): Promise<{
       }))
       .sort((a, b) => b.total - a.total)
 
-    // Get recent donations (top 3)
-    const recentDonations = donationList.slice(0, 3)
+    // Get recent donations (up to 10 so consumers can slice as needed)
+    const recentDonations = donationList.slice(0, 10)
 
     return {
       total,
