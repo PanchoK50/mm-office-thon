@@ -3,7 +3,7 @@ import { ROOMS } from "@/lib/constants"
 import { formatEUR, cn } from "@/lib/utils"
 import { ImageIcon, Lock, CheckCircle2 } from "lucide-react"
 
-export function RoomProgressSection() {
+export function RoomProgressSection({ totalRaised }: { totalRaised: number }) {
   const sortedRooms = [...ROOMS].sort((a, b) => a.order - b.order)
 
   return (
@@ -11,7 +11,7 @@ export function RoomProgressSection() {
       {/* Heading — stays in the safe zone so it aligns with sibling sections */}
       <div className="mx-auto mb-8 max-w-[1440px] px-6 lg:pl-24 lg:pr-[456px]">
         <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          Office Loading<span className="text-accent">...</span>
+          Office Loading...
         </h2>
         <p className="mt-2 text-muted-foreground">
           Unlock rooms as we hit our funding goals
@@ -31,7 +31,13 @@ export function RoomProgressSection() {
         )}
       >
         {sortedRooms.map((room, index) => {
-          const raised = room.sponsors.reduce((s, sp) => s + sp.amount, 0)
+          const cumulativeBefore = sortedRooms
+            .slice(0, index)
+            .reduce((s, r) => s + r.sponsorGoal, 0)
+          const raised = Math.max(
+            0,
+            Math.min(room.sponsorGoal, totalRaised - cumulativeBefore)
+          )
           const isFunded = raised >= room.sponsorGoal
           const isPartial = raised > 0 && !isFunded
           const percentage = Math.min((raised / room.sponsorGoal) * 100, 100)
@@ -112,18 +118,8 @@ export function RoomProgressSection() {
                     <div className="space-y-1.5">
                       <p className="flex items-center gap-1 text-[11px] font-semibold text-green-600">
                         <CheckCircle2 className="h-3 w-3" />
-                        {formatEUR(raised)} raised
+                        {formatEUR(room.sponsorGoal)} funded
                       </p>
-                      <div className="flex flex-wrap gap-1">
-                        {room.sponsors.map((sp, i) => (
-                          <span
-                            key={`${sp.name}-${i}`}
-                            className="rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-700"
-                          >
-                            {sp.anonymous ? "Anonymous" : sp.name}
-                          </span>
-                        ))}
-                      </div>
                     </div>
                   ) : isPartial ? (
                     <div className="space-y-1.5">
@@ -138,6 +134,7 @@ export function RoomProgressSection() {
                       <div
                         className="h-1.5 w-full overflow-hidden rounded-full bg-secondary"
                         role="progressbar"
+                        aria-label={`${room.name} funding progress`}
                         aria-valuenow={Math.round(percentage)}
                         aria-valuemin={0}
                         aria-valuemax={100}
@@ -147,21 +144,11 @@ export function RoomProgressSection() {
                           style={{ width: `${percentage}%` }}
                         />
                       </div>
-                      <div className="flex flex-wrap gap-1">
-                        {room.sponsors.map((sp, i) => (
-                          <span
-                            key={`${sp.name}-${i}`}
-                            className="rounded-full bg-accent/10 px-2 py-0.5 text-[10px] font-medium text-accent"
-                          >
-                            {sp.anonymous ? "Anonymous" : sp.name}
-                          </span>
-                        ))}
-                      </div>
                     </div>
                   ) : (
                     <div>
                       <span className="inline-flex items-center rounded-full border border-border bg-secondary px-2.5 py-0.5 text-[10px] font-medium text-muted-foreground">
-                        Available
+                        Needed
                       </span>
                       <p className="mt-1.5 text-sm font-bold">
                         {formatEUR(room.sponsorGoal)}

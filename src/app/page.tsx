@@ -120,7 +120,7 @@ export default async function Home() {
       {/* RoomProgressSection renders full-width so its horizontal scroll row
           can bleed under the floating card on lg+. Its heading block applies
           its own lg:pr so the heading still aligns with the other sections. */}
-      <RoomProgressSection />
+      <RoomProgressSection totalRaised={cardData.totalRaised} />
 
       {/* Post-rooms sections go back inside the safe zone. */}
       <div className="mx-auto max-w-[1440px] lg:pr-[456px]">
@@ -133,26 +133,21 @@ export default async function Home() {
         <FooterSection />
       </div>
 
-      {/* Progress panel — occupies the reserved right column on lg+ and
-          stays visible via position: sticky as the user scrolls. The outer
-          wrapper spans main's full height so the sticky child has room to
-          stick through the whole page. Pinned to the right edge of a
-          notional 1440px content container so the page feels centered on
-          wide viewports. */}
-      <div
-        className="pointer-events-none absolute inset-y-0 z-30 hidden w-[360px] lg:block"
+      {/* Progress panel — fixed to the viewport on lg+ so it is always
+          visible regardless of scroll position. Pinned to the right edge of
+          a notional 1440px content container so the page feels centered on
+          wide viewports. A max-height + overflow keeps tall cards usable on
+          short viewports. */}
+      <aside
+        className="pointer-events-auto fixed top-24 z-30 hidden w-[360px] overflow-y-auto lg:block"
         style={{
-          right: "max(6rem, calc((100vw - 1440px) / 2 + 6rem))",
+          right: "max(3rem, calc((100vw - 1440px) / 2 + 3rem))",
+          maxHeight: "calc(100vh - 7rem)",
         }}
-        aria-hidden="true"
+        aria-label="Fundraising progress"
       >
-        <aside
-          className="pointer-events-auto sticky top-24"
-          aria-label="Fundraising progress"
-        >
-          <HeroProgressCard {...cardData} />
-        </aside>
-      </div>
+        <HeroProgressCard {...cardData} />
+      </aside>
     </main>
   )
 }

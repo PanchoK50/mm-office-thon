@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Check, Heart, Share2 } from "lucide-react"
+import { Check, Heart } from "lucide-react"
 import { formatEUR, formatTimeAgo } from "@/lib/utils"
 import { DonationModal } from "@/components/donation-modal"
 
@@ -40,6 +40,7 @@ interface HeroProgressCardProps {
 }
 
 export function HeroProgressCard({
+  totalRaised,
   totalGoal,
   milestones,
   recentDonations,
@@ -61,7 +62,7 @@ export function HeroProgressCard({
   const goalOfNext = nextMilestone?.goal ?? totalGoal
 
   return (
-    <div className="flex flex-col gap-5 rounded-2xl border border-border bg-card p-5 shadow-[0_20px_50px_-18px_rgba(0,0,0,0.25),0_4px_12px_-4px_rgba(0,0,0,0.06)]">
+    <div className="flex flex-col gap-5 rounded-2xl border border-border bg-card p-5">
       <MilestoneStrip milestones={milestones} />
 
       <NextMilestoneHeadline
@@ -71,6 +72,8 @@ export function HeroProgressCard({
         goalOfNext={goalOfNext}
         allDone={nextIdx === -1}
       />
+
+      <TotalSummary totalRaised={totalRaised} totalGoal={totalGoal} />
 
       <ActionButtons onSupport={() => setModalOpen(true)} />
 
@@ -240,56 +243,49 @@ function CircularProgress({
   )
 }
 
-/* ---------------- Support + Share ---------------- */
+/* ---------------- Total summary ---------------- */
+
+function TotalSummary({
+  totalRaised,
+  totalGoal,
+}: {
+  totalRaised: number
+  totalGoal: number
+}) {
+  return (
+    <div className="flex items-center justify-between gap-3 rounded-lg border border-border/60 bg-muted/30 px-3 py-2.5">
+      <div className="min-w-0">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+          Total raised
+        </p>
+        <p className="mt-0.5 text-sm font-bold tabular-nums text-foreground">
+          {formatEUR(totalRaised)}
+        </p>
+      </div>
+      <div className="min-w-0 text-right">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+          Total needed
+        </p>
+        <p className="mt-0.5 text-sm font-bold tabular-nums text-foreground">
+          {formatEUR(totalGoal)}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+/* ---------------- Support ---------------- */
 
 function ActionButtons({ onSupport }: { onSupport: () => void }) {
-  const [shareState, setShareState] = useState<"idle" | "copied">("idle")
-
-  const handleShare = async () => {
-    const shareData = {
-      title: "Manage and More goes Kunstlabor",
-      text: "Help us fund the first Manage and More office at Kunstlabor München.",
-      url: typeof window !== "undefined" ? window.location.href : "",
-    }
-
-    try {
-      if (
-        typeof navigator !== "undefined" &&
-        typeof navigator.share === "function"
-      ) {
-        await navigator.share(shareData)
-        return
-      }
-      if (
-        typeof navigator !== "undefined" &&
-        navigator.clipboard?.writeText
-      ) {
-        await navigator.clipboard.writeText(shareData.url)
-        setShareState("copied")
-        setTimeout(() => setShareState("idle"), 2000)
-      }
-    } catch {
-      /* user cancelled — no-op */
-    }
-  }
-
   return (
-    <div id="support" className="grid grid-cols-2 gap-2.5">
+    <div id="support">
       <button
         type="button"
         onClick={onSupport}
-        className="flex h-11 items-center justify-center gap-2 rounded-lg bg-accent text-sm font-bold text-accent-foreground shadow-sm shadow-accent/20 transition-all hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 active:translate-y-0"
+        className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-accent text-sm font-bold text-accent-foreground shadow-sm shadow-accent/20 transition-all hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 active:translate-y-0"
       >
         <Heart className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
         Support
-      </button>
-      <button
-        type="button"
-        onClick={handleShare}
-        className="flex h-11 items-center justify-center gap-2 rounded-lg border-[1.5px] border-accent bg-background text-sm font-bold text-accent transition-all hover:-translate-y-0.5 hover:bg-accent/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 active:translate-y-0"
-      >
-        <Share2 className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
-        {shareState === "copied" ? "Copied!" : "Share"}
       </button>
     </div>
   )
