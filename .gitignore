@@ -45,6 +45,11 @@ next-env.d.ts
 *.png
 !public/**/*.png
 
+# large video assets — host via CDN / blob storage, not git
+public/videos/
+*.mov
+*.mp4
+
 # sisyphus orchestration (keep plans and evidence, ignore temp files)
 .sisyphus/boulder.json
 .sisyphus/notepads/

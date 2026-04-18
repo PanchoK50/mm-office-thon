@@ -1,184 +1,135 @@
 import Image from "next/image"
-import { MilestoneProgressBar } from "@/components/ui/milestone-progress-bar"
-import { HeroCTA } from "@/components/hero-cta"
-import { getDonationStats } from "@/app/actions"
-import { formatEUR } from "@/lib/utils"
-import { ROOMS } from "@/lib/constants"
-import { FUNDRAISING_GOAL } from "@/lib/constants"
+import {
+  HeroProgressCard,
+  type HeroMilestone,
+  type HeroDonation,
+  type HeroGenerationTotal,
+} from "@/components/hero-progress-card"
 
-export async function HeroSection() {
-  const stats = await getDonationStats()
-  const top3Generations = stats.generationTotals.slice(0, 3)
-  const last3Donations = stats.recentDonations.slice(0, 3)
+const MM_URL = "https://www.manageandmore.de"
+const KUNSTLABOR_URL = "https://kunstlabor.org/kunst/atelier-mieten-muenchen/"
 
-  const totalGoal = FUNDRAISING_GOAL
-  const percentage = Math.min((stats.total / totalGoal) * 100, 100)
-
-  const SHORT_LABELS: Record<string, string> = {
-    "Deep Work / Focus": "Deep Work",
-    "Incubation Space": "Incubation",
-    "Meeting Rooms": "Meeting",
+interface HeroSectionProps {
+  cardData: {
+    totalRaised: number
+    totalGoal: number
+    milestones: HeroMilestone[]
+    recentDonations: HeroDonation[]
+    generationTotals: HeroGenerationTotal[]
   }
+}
 
-  const milestones = ROOMS.reduce<
-    { position: number; label: string; funded: boolean }[]
-  >((acc, room) => {
-    const cumulativeGoal = (acc[acc.length - 1]?.position ?? 0) * totalGoal / 100 + room.sponsorGoal
-    const roomTotal = room.sponsors.reduce((s, sp) => s + sp.amount, 0)
-    return [
-      ...acc,
-      {
-        position: (cumulativeGoal / totalGoal) * 100,
-        label: SHORT_LABELS[room.name] ?? room.name,
-        funded: roomTotal >= room.sponsorGoal,
-      },
-    ]
-  }, [])
-
-  milestones.push({
-    position: 100,
-    label: "Kaution",
-    funded: false,
-  })
-
+export function HeroSection({ cardData }: HeroSectionProps) {
   return (
-    <section className="px-6 py-12 sm:py-20">
-      <div className="mx-auto max-w-5xl space-y-8">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]">
-          <div className="flex flex-col gap-6">
-            <div className="flex items-center gap-4">
+    <section className="bg-background">
+      {/* Top bar: logos flush left, "Making the MM Office reality" centered
+          as a bold Geist title with the brand cyan highlighting "MM Office".
+          This is the ONLY grey band on the page — everything else is black
+          or white. */}
+      <div className="bg-top-bar">
+        <div className="mx-auto flex max-w-[1440px] items-center gap-4 px-6 py-5 lg:pr-[392px]">
+          {/* Left: logos */}
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            <a
+              href={MM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-opacity hover:opacity-80"
+              aria-label="Manage and More — opens in new tab"
+            >
               <Image
                 src="/logos/mm-logo.webp"
                 alt="Manage and More"
-                width={120}
-                height={40}
-                className="h-10 w-auto"
+                width={160}
+                height={56}
+                className="h-6 w-auto sm:h-8"
+                priority
               />
-              <span className="text-muted-foreground">×</span>
+            </a>
+            <span
+              className="text-xs text-muted-foreground"
+              aria-hidden="true"
+            >
+              ×
+            </span>
+            <a
+              href={KUNSTLABOR_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-opacity hover:opacity-80"
+              aria-label="Kunstlabor München — opens in new tab"
+            >
               <Image
                 src="/logos/kunstlabor-logo.webp"
-                alt="Kunstlabor"
-                width={120}
-                height={40}
-                className="h-10 w-auto"
+                alt="Kunstlabor München"
+                width={160}
+                height={56}
+                className="h-6 w-auto sm:h-8"
+                priority
               />
-            </div>
-
-            <nav className="flex gap-3">
-              <a
-                href="#floor-plan"
-                className="rounded-full border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:border-accent/40 hover:text-accent"
-              >
-                Discover the Office
-              </a>
-              <a
-                href="#support"
-                className="rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
-              >
-                Support Us
-              </a>
-            </nav>
-
-            <div>
-              <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-                The first{" "}
-                <span className="text-accent">Manage and More Office</span>
-              </h1>
-              <p className="mt-3 text-lg text-muted-foreground">
-                For the first time in Manage and More history, we&apos;re building
-                our own space &mdash; a home for founders, ideas, and community at
-                Kunstlabor München.
-              </p>
-            </div>
-
-            <div id="support" className="flex flex-col gap-3">
-              <HeroCTA />
-              <p className="text-sm text-muted-foreground">
-                Questions? Reach out to{" "}
-                <a href="tel:+491638737358" className="font-medium text-foreground hover:text-accent">
-                  David Köthnig
-                </a>{" "}
-                <span className="text-xs">(G43)</span>{" "}
-                <a href="tel:+491638737358" className="hover:text-accent">
-                  +49 163 8737358
-                </a>
-              </p>
-            </div>
+            </a>
           </div>
 
-          <div className="rounded-xl border border-border bg-card p-6 space-y-5 h-fit">
-            <h3 className="text-lg font-semibold">Fundraising Progress</h3>
+          {/* Middle: bold sans-serif title, MM cyan highlight on the brand
+              words. Hidden on very narrow screens to avoid colliding with
+              the logos on the left. */}
+          <h1 className="hidden flex-1 text-center text-xl font-bold tracking-tight text-foreground sm:block md:text-2xl lg:text-3xl">
+            Making the <span className="text-accent">MM Office</span> reality
+          </h1>
 
-            <p className="text-sm text-muted-foreground">
-              <span className="font-semibold text-foreground">{stats.count}</span>{" "}
-              {stats.count === 1 ? "supporter" : "supporters"}
-            </p>
-
-            {percentage >= 100 ? (
-              <div className="rounded-lg bg-accent/10 px-3 py-2 text-sm text-accent font-medium">
-                🎉 Goal reached! Every extra euro pushes us further.
-              </div>
-            ) : percentage >= 80 ? (
-              <div className="rounded-lg bg-accent/10 px-3 py-2 text-sm text-accent font-medium">
-                🎉 Almost there — stretch goal in sight!
-              </div>
-            ) : null}
-
-            {top3Generations.length > 0 && (
-              <div className="space-y-2">
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Top Generations
-                </h4>
-                {top3Generations.map((gen, i) => (
-                  <div
-                    key={gen.generation}
-                    className="flex items-center justify-between text-sm"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-muted-foreground">{i + 1}.</span>
-                      <span className="font-medium">{gen.generation}</span>
-                    </div>
-                    <span className="font-semibold text-accent">
-                      {formatEUR(gen.total)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {last3Donations.length > 0 && (
-              <div className="space-y-2">
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Recent Donations
-                </h4>
-                {last3Donations.map((donation) => (
-                  <div
-                    key={donation.id}
-                    className="flex items-center justify-between text-sm"
-                  >
-                    <span className="text-muted-foreground truncate max-w-[160px]">
-                      {donation.donor_name}
-                    </span>
-                    <span className="font-semibold">
-                      {formatEUR(donation.amount)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="rounded-xl border border-border bg-card p-6 sm:p-8">
-          <h3 className="mb-1 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            Room Milestones
-          </h3>
-          <MilestoneProgressBar
-            current={stats.total}
-            total={totalGoal}
-            milestones={milestones}
+          {/* Right spacer, balances the logos so the tagline sits truly
+              centered in the available row. */}
+          <div
+            aria-hidden="true"
+            className="hidden shrink-0 sm:block"
+            style={{ width: 180 }}
           />
         </div>
+      </div>
+
+      {/* Hero body: video + headline on the darker grey. The floating progress
+          card sits on top of this on lg+, glowing against the grey. */}
+      <div className="bg-hero-dark text-white">
+        <div className="mx-auto max-w-[1440px] px-6 py-12 sm:py-16 lg:pr-[392px]">
+          <video
+            className="block aspect-video w-full bg-black object-cover"
+            src="/videos/mm-office.mov"
+            autoPlay
+            muted
+            loop
+            playsInline
+            controls
+            preload="metadata"
+            aria-label="Tour of the new Manage and More office at Kunstlabor"
+          />
+
+          <div className="mt-10 max-w-3xl">
+            <h1 className="text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+              Giving the community the home{" "}
+              <span className="whitespace-nowrap">it deserves.</span>
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
+              For the first time in Manage and More history, we&apos;re building
+              our own office &mdash; a permanent home for founders, ideas, and
+              community at{" "}
+              <a
+                href={KUNSTLABOR_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-white underline underline-offset-4 decoration-white/40 transition-colors hover:decoration-white"
+              >
+                Kunstlabor München
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile-only: progress card inline under the hero (light bg).
+          On lg+ the fixed sidebar in page.tsx takes over. */}
+      <div className="bg-background px-6 py-10 lg:hidden">
+        <HeroProgressCard {...cardData} />
       </div>
     </section>
   )
