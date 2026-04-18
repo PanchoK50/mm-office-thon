@@ -16,7 +16,7 @@ export function StorySection() {
           <p>
             That changes now. For the first time in Manage and More history,
             we&apos;re creating a permanent home: coworking desks, incubation
-            rooms, meeting spaces, and a community hub &mdash; all under one
+            rooms, meeting spaces, and a community all under one
             roof at <span className="font-semibold text-foreground">Kunstlabor München</span>.
           </p>
           <p>
