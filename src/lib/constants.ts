@@ -13,9 +13,11 @@ export const MAX_CUSTOM_AMOUNT = 50000
    Manage and More and receives donations. Surfaced in the donation modal
    and in the footer so visitors can transfer without opening the flow. */
 export const BANK_DETAILS = {
-  accountHolder: "Thomas Stiftung",
-  iban: "IBAN_PLACEHOLDER",
-  bic: "BIC_PLACEHOLDER",
+  accountHolder: "Stiftung Thomas Kirchner Bildungsförderungs gGmbH",
+  accountType: "KontoKorrent",
+  accountNumber: "1050692621 (EUR)",
+  iban: "DE46 3003 0900 1050 6926 21",
+  bic: "MEFIDEMM300",
 } as const
 
 /* ---------------- Contribution tiers (donation modal) ---------------- */

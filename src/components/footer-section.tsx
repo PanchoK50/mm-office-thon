@@ -30,6 +30,10 @@ export function FooterSection() {
           <dl className="grid gap-1.5 sm:grid-cols-[auto_1fr] sm:gap-x-4">
             <dt className="text-muted-foreground">Account holder</dt>
             <dd className="font-medium">{BANK_DETAILS.accountHolder}</dd>
+            <dt className="text-muted-foreground">Account type</dt>
+            <dd className="font-medium">{BANK_DETAILS.accountType}</dd>
+            <dt className="text-muted-foreground">Account number</dt>
+            <dd className="font-mono">{BANK_DETAILS.accountNumber}</dd>
             <dt className="text-muted-foreground">IBAN</dt>
             <dd className="font-mono">{BANK_DETAILS.iban}</dd>
             <dt className="text-muted-foreground">BIC</dt>

@@ -614,6 +614,8 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
             {/* Bank details box */}
             <div className="space-y-2 rounded-lg border border-border bg-muted/40 p-4 text-sm">
               <Row label="Account holder" value={BANK_DETAILS.accountHolder} />
+              <Row label="Account type" value={BANK_DETAILS.accountType} />
+              <Row label="Account number" value={BANK_DETAILS.accountNumber} mono />
               <Row label="IBAN" value={BANK_DETAILS.iban} mono />
               <Row label="BIC" value={BANK_DETAILS.bic} mono />
               <Row label="Reference" value={referenceCode} mono />
