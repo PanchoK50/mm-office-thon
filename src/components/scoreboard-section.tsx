@@ -17,7 +17,7 @@ export function ScoreboardSection({ donations }: { donations: Donation[] }) {
   const ranked = donations
     .filter((d) => d.amount !== 0)
     .sort((a, b) => b.amount - a.amount)
-  const sorted = [...pending, ...ranked]
+  const sorted = [...ranked, ...pending]
 
   return (
     <section id="scoreboard" className="px-6 py-16 sm:py-20 lg:px-24">
@@ -37,7 +37,7 @@ export function ScoreboardSection({ donations }: { donations: Donation[] }) {
           <div className="space-y-2">
             {sorted.map((d, i) => {
               const isPending = d.amount === 0
-              const rank = isPending ? -1 : i - pending.length
+              const rank = isPending ? -1 : i
               const Icon = isPending ? null : (rankIcons[rank] ?? null)
               return (
                 <div
