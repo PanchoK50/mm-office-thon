@@ -450,6 +450,24 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
               </p>
             )}
 
+            {/* Important disclaimers */}
+            <div className="space-y-2 rounded-lg border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+              <p>
+                <span className="font-semibold text-foreground">Good to know:</span>
+              </p>
+              <ul className="list-disc space-y-1 pl-4">
+                <li>
+                  For donations over <span className="font-medium text-foreground">300&nbsp;€</span>, we
+                  can issue a donation receipt (Spendenbescheinigung).
+                </li>
+                <li>
+                  For donations over <span className="font-medium text-foreground">1.000&nbsp;€</span>, you
+                  don&apos;t have to transfer right now — feel free to transfer
+                  until <span className="font-medium text-foreground">Friday the 24th</span>.
+                </li>
+              </ul>
+            </div>
+
             <Button
               className="w-full rounded-xl bg-accent text-accent-foreground hover:bg-accent/90"
               size="lg"
