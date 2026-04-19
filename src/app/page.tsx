@@ -17,6 +17,7 @@ import {
   type HeroDonation,
   type HeroGenerationTotal,
 } from "@/components/hero-progress-card"
+import { MobileStickyFooter } from "@/components/mobile-sticky-footer"
 
 export const revalidate = 60
 
@@ -40,6 +41,8 @@ type CardData = {
   milestones: HeroMilestone[]
   recentDonations: HeroDonation[]
   generationTotals: HeroGenerationTotal[]
+  nextMilestonePercent: number
+  nextMilestoneLabel: string
 }
 
 function buildCardData(
@@ -73,12 +76,26 @@ function buildCardData(
     (g) => ({ generation: g.generation, total: g.total })
   )
 
+  const nextIdx = milestones.findIndex((m) => m.raised < m.goal)
+  const nextMilestone =
+    nextIdx === -1 ? milestones[milestones.length - 1] : milestones[nextIdx]
+  const nextMilestonePercent =
+    nextIdx === -1
+      ? 100
+      : Math.min(
+          100,
+          Math.round((nextMilestone.raised / nextMilestone.goal) * 100)
+        )
+  const nextMilestoneLabel = nextMilestone?.label ?? "Kaution"
+
   return {
     totalRaised: stats.total,
     totalGoal: FUNDRAISING_GOAL,
     milestones,
     recentDonations,
     generationTotals,
+    nextMilestonePercent,
+    nextMilestoneLabel,
   }
 }
 
@@ -148,6 +165,11 @@ export default async function Home() {
       >
         <HeroProgressCard {...cardData} />
       </aside>
+
+      <MobileStickyFooter
+        percent={cardData.nextMilestonePercent}
+        label={cardData.nextMilestoneLabel}
+      />
     </main>
   )
 }
