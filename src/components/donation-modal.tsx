@@ -8,11 +8,7 @@ import {
   FileSignature,
   Zap,
 } from "lucide-react"
-import {
-  createDonation,
-  uploadScreenshot,
-  updateDonationCommitment,
-} from "@/app/actions"
+import { createDonation, uploadScreenshot } from "@/app/actions"
 import {
   CONTRIBUTION_TIERS,
   type ContributionTier,
@@ -74,8 +70,6 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
   const [donorMessage, setDonorMessage] = useState("")
   const [nameError, setNameError] = useState("")
 
-  // Post-step-2 — identity of the created donation row
-  const [donationId, setDonationId] = useState<number | null>(null)
   const [referenceCode, setReferenceCode] = useState("")
   const [isPending, setIsPending] = useState(false)
 
@@ -83,6 +77,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
   const [confirmationMethod, setConfirmationMethod] = useState<
     "upload" | "whatsapp" | "loi" | null
   >(null)
+  const [screenshotFile, setScreenshotFile] = useState<File | null>(null)
   const [uploadError, setUploadError] = useState("")
   const [copied, setCopied] = useState(false)
   const [showLoIPanel, setShowLoIPanel] = useState(false)
@@ -154,10 +149,10 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
     setGeneration("")
     setDonorMessage("")
     setNameError("")
-    setDonationId(null)
     setReferenceCode("")
     setIsPending(false)
     setConfirmationMethod(null)
+    setScreenshotFile(null)
     setUploadError("")
     setCopied(false)
     setShowLoIPanel(false)
@@ -233,29 +228,14 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
       return
     }
 
-    setIsPending(true)
-    const result = await createDonation({
-      donor_name: trimmedName,
-      telephone: trimmedTelephone,
-      amount,
-      generation,
-      message: donorMessage || undefined,
-      commitment_type: "transfer", // tentative, may be flipped to "loi" in step 3
-    })
-    setIsPending(false)
-
-    if (result.success) {
-      setDonationId(result.donationId)
-      setReferenceCode(result.referenceCode)
-      setStep(3)
-    } else {
-      setNameError(result.error)
-    }
+    // Generate reference code client-side for display only
+    setReferenceCode(`MM-${Date.now()}`)
+    setStep(3)
   }
 
-  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
-    if (!file || !donationId) return
+    if (!file) return
 
     setUploadError("")
 
@@ -271,18 +251,8 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
       return
     }
 
-    setIsPending(true)
-    const formData = new FormData()
-    formData.append("file", file)
-    formData.append("donationId", String(donationId))
-    const result = await uploadScreenshot(formData)
-    setIsPending(false)
-
-    if (result.success) {
-      setConfirmationMethod("upload")
-    } else {
-      setUploadError(result.error)
-    }
+    setScreenshotFile(file)
+    setConfirmationMethod("upload")
   }
 
   function handleWhatsApp() {
@@ -295,20 +265,49 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
     setConfirmationMethod("whatsapp")
   }
 
-  async function handleConfirmLoI() {
-    setLoiError("")
-    if (!donationId) return
+  function handleConfirmLoI() {
+    setConfirmationMethod("loi")
+    setShowLoIPanel(false)
+  }
 
+  async function handleFinalConfirmation() {
+    setUploadError("")
     setIsPending(true)
-    const result = await updateDonationCommitment(donationId, "loi")
-    setIsPending(false)
 
-    if (result.success) {
-      setConfirmationMethod("loi")
-      setShowLoIPanel(false)
-    } else {
-      setLoiError(result.error)
+    let screenshotUrl: string | undefined
+
+    if (screenshotFile) {
+      const formData = new FormData()
+      formData.append("file", screenshotFile)
+      const uploadResult = await uploadScreenshot(formData)
+      if (!uploadResult.success) {
+        setUploadError(uploadResult.error)
+        setIsPending(false)
+        return
+      }
+      screenshotUrl = uploadResult.url
     }
+
+    const commitmentType = confirmationMethod === "loi" ? "loi" : "transfer"
+
+    const result = await createDonation({
+      donor_name: donorName.trim(),
+      telephone: telephone.trim(),
+      amount,
+      generation,
+      message: donorMessage || undefined,
+      commitment_type: commitmentType,
+      screenshot_url: screenshotUrl,
+    })
+
+    if (!result.success) {
+      setUploadError(result.error)
+      setIsPending(false)
+      return
+    }
+
+    setIsPending(false)
+    setStep(4)
   }
 
   async function handleCopyIBAN() {
@@ -589,11 +588,8 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
           <div className="space-y-5">
             <div className="text-center">
               <h2 className="text-xl font-semibold">
-                Transfer to Thomas Stiftung
+                Transfer details
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Thomas Stiftung rents the office on behalf of Manage and More.
-              </p>
             </div>
 
             {/* Instant-transfer callout */}
@@ -614,13 +610,8 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
             {/* Bank details box */}
             <div className="space-y-2 rounded-lg border border-border bg-muted/40 p-4 text-sm">
               <Row label="Account holder" value={BANK_DETAILS.accountHolder} />
-              <Row label="Account type" value={BANK_DETAILS.accountType} />
-              <Row label="Account number" value={BANK_DETAILS.accountNumber} mono />
               <Row label="IBAN" value={BANK_DETAILS.iban} mono />
-              <Row label="BIC" value={BANK_DETAILS.bic} mono />
-              <Row label="Reference" value={BANK_DETAILS.reference} />
               <Row label="Reference code" value={referenceCode} mono />
-              {derivedTier && <Row label="Tier" value={tierLabel} />}
               <Row label="Amount" value={formatEUR(amount)} emphasis />
             </div>
 
@@ -649,7 +640,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                 <input
                   type="file"
                   accept="image/jpeg,image/png,image/webp"
-                  onChange={handleFileUpload}
+                  onChange={handleFileSelect}
                   className="sr-only"
                   disabled={isPending}
                   aria-label="Upload transfer screenshot"
@@ -659,7 +650,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
               {/* WhatsApp */}
               <MethodButton
                 icon={<MessageCircle className="h-5 w-5" aria-hidden />}
-                label="Send confirmation via WhatsApp"
+                label="Send screenshot via WhatsApp"
                 chosen={confirmationMethod === "whatsapp"}
                 onClick={handleWhatsApp}
               />
@@ -706,10 +697,9 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                         <Button
                           size="sm"
                           className="bg-neutral-900 text-white hover:bg-neutral-800"
-                          disabled={isPending}
                           onClick={handleConfirmLoI}
                         >
-                          {isPending ? "Confirming..." : "I confirm"}
+                          I confirm
                         </Button>
                       </div>
                       {loiError && (
@@ -736,10 +726,10 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                 "w-full rounded-xl bg-accent text-accent-foreground hover:bg-accent/90",
                 !confirmationMethod && "cursor-not-allowed opacity-50"
               )}
-              disabled={!confirmationMethod}
-              onClick={() => setStep(4)}
+              disabled={!confirmationMethod || isPending}
+              onClick={handleFinalConfirmation}
             >
-              Confirm payment
+              {isPending ? "Submitting..." : "Final confirmation"}
             </Button>
           </div>
         )}

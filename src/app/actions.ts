@@ -12,6 +12,7 @@ export async function createDonation(input: {
   generation: string
   message?: string
   commitment_type?: 'transfer' | 'loi'
+  screenshot_url?: string
 }): Promise<
   | { success: true; donationId: number; referenceCode: string }
   | { success: false; error: string }
@@ -84,7 +85,7 @@ export async function createDonation(input: {
         message: input.message || null,
         status: 'pending',
         commitment_type: input.commitment_type ?? 'transfer',
-        screenshot_url: null,
+        screenshot_url: input.screenshot_url ?? null,
       } as DonationInsert)
       .select('id')
       .single()
@@ -116,87 +117,40 @@ export async function uploadScreenshot(
   formData: FormData
 ): Promise<{ success: true; url: string } | { success: false; error: string }> {
   try {
-    // Extract file and donationId
     const file = formData.get('file') as File
-    const donationId = formData.get('donationId') as string
 
-    // Validate inputs
     if (!file) {
-      return {
-        success: false,
-        error: 'File is required',
-      }
+      return { success: false, error: 'File is required' }
     }
 
-    if (!donationId) {
-      return {
-        success: false,
-        error: 'Donation ID is required',
-      }
-    }
-
-    // Validate file type
     if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-      return {
-        success: false,
-        error: 'Only JPEG, PNG, or WebP images are allowed',
-      }
+      return { success: false, error: 'Only JPEG, PNG, or WebP images are allowed' }
     }
 
-    // Validate file size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
-      return {
-        success: false,
-        error: 'File size must be less than 5MB',
-      }
+      return { success: false, error: 'File size must be less than 5MB' }
     }
 
-    // Convert file to buffer
     const buffer = await file.arrayBuffer()
+    const ext = file.name.split('.').pop() ?? 'jpg'
+    const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
-    // Upload to Supabase Storage
-    const path = `${donationId}/${file.name}`
     const { error: uploadError } = await supabase.storage
       .from('screenshots')
       .upload(path, buffer, {
         contentType: file.type,
-        upsert: true,
+        upsert: false,
       })
 
     if (uploadError) {
-      return {
-        success: false,
-        error: `Failed to upload file: ${uploadError.message}`,
-      }
+      return { success: false, error: `Failed to upload file: ${uploadError.message}` }
     }
 
-    // Get public URL
     const { data: publicUrlData } = supabase.storage
       .from('screenshots')
       .getPublicUrl(path)
 
-    const publicUrl = publicUrlData.publicUrl
-
-    // Update donation row with screenshot URL
-    const { error: updateError } = await supabase
-      .from('donations')
-      .update({ screenshot_url: publicUrl })
-      .eq('id', parseInt(donationId))
-
-    if (updateError) {
-      return {
-        success: false,
-        error: `Failed to update donation: ${updateError.message}`,
-      }
-    }
-
-    // Revalidate cache
-    revalidatePath('/')
-
-    return {
-      success: true,
-      url: publicUrl,
-    }
+    return { success: true, url: publicUrlData.publicUrl }
   } catch (err) {
     return {
       success: false,
