@@ -115,6 +115,15 @@ export function HeroSection({ cardData }: HeroSectionProps) {
               </a>
               .
             </p>
+            <p className="mt-3 text-sm text-white/50">
+              For more questions contact David Köthnig (G43):{" "}
+              <a
+                href="tel:+491638737358"
+                className="text-white/70 underline underline-offset-2 decoration-white/30 transition-colors hover:text-white hover:decoration-white/60"
+              >
+                +49 163 8737358
+              </a>
+            </p>
           </div>
         </div>
       </div>
