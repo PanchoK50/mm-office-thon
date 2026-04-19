@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabase"
 import type { Donation } from "@/lib/supabase"
 import { getDonationStats } from "@/app/actions"
-import { ROOMS, FUNDRAISING_GOAL } from "@/lib/constants"
+import { ROOMS, KAUTION, FUNDRAISING_GOAL } from "@/lib/constants"
 import { HeroSection } from "@/components/hero-section"
 import { StorySection } from "@/components/story-section"
 import { BenefitsSection } from "@/components/benefits-section"
@@ -48,21 +48,29 @@ type CardData = {
 function buildCardData(
   stats: Awaited<ReturnType<typeof getDonationStats>>
 ): CardData {
-  const milestones: HeroMilestone[] = ROOMS.map((room, i) => {
-    const cumulativeBefore = ROOMS.slice(0, i).reduce(
-      (s, r) => s + r.sponsorGoal,
-      0
-    )
-    const raised = Math.max(
-      0,
-      Math.min(room.sponsorGoal, stats.total - cumulativeBefore)
-    )
-    return {
-      label: SHORT_LABELS[room.name] ?? room.name,
-      raised,
-      goal: room.sponsorGoal,
-    }
-  })
+  const kautionRaised = Math.max(0, Math.min(KAUTION, stats.total))
+  const kautionMilestone: HeroMilestone = {
+    label: "Kaution",
+    raised: kautionRaised,
+    goal: KAUTION,
+  }
+
+  const milestones: HeroMilestone[] = [
+    kautionMilestone,
+    ...ROOMS.map((room, i) => {
+      const cumulativeBefore =
+        KAUTION + ROOMS.slice(0, i).reduce((s, r) => s + r.sponsorGoal, 0)
+      const raised = Math.max(
+        0,
+        Math.min(room.sponsorGoal, stats.total - cumulativeBefore)
+      )
+      return {
+        label: SHORT_LABELS[room.name] ?? room.name,
+        raised,
+        goal: room.sponsorGoal,
+      }
+    }),
+  ]
 
   const recentDonations: HeroDonation[] = stats.recentDonations.map((d) => ({
     id: d.id,
@@ -86,7 +94,7 @@ function buildCardData(
           100,
           Math.round((nextMilestone.raised / nextMilestone.goal) * 100)
         )
-  const nextMilestoneLabel = nextMilestone?.label ?? "Kaution"
+  const nextMilestoneLabel = nextMilestone?.label ?? "Complete"
 
   return {
     totalRaised: stats.total,

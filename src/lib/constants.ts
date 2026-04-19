@@ -1,7 +1,9 @@
 /* FUNDRAISING_GOAL is defined near the bottom of this file, after ROOMS,
-   because it's derived from the sum of each room's sponsorGoal. Each
-   sponsorGoal covers 12 months of rent + a 3-month security deposit
-   (= 15 × monthlyRent). */
+   because it's derived from the Kaution (security deposit) plus the sum
+   of each room's sponsorGoal (= 12 months of Warmmiete brutto).
+   All monthly rents are Warmmiete inkl. BK-VZ, inkl. 19 % MwSt.
+   Kaution = 3 × Kaltmiete netto (ohne MwSt) for all rooms combined.
+   Values taken from Kostenaufstellung_OG2_Berechnung.xlsx. */
 
 export const GENERATIONS = Array.from({ length: 45 }, (_, i) => `G${i + 1}`)
 export const MIN_CUSTOM_AMOUNT = 10
@@ -199,7 +201,7 @@ export type Room = {
   name: string
   type: string
   sqm: number
-  /** Warmmiete inkl. BK-VZ, ohne MwSt (€/month) */
+  /** Warmmiete inkl. BK-VZ, inkl. 19 % MwSt (€/month) */
   monthlyRent: number
   sponsorGoal: number
   sponsors: RoomSponsor[]
@@ -211,11 +213,11 @@ export type Room = {
    The hero milestone strip pours donations across ROOMS in this array order,
    and room-progress-section sorts by `order` — both pick this sequence up.
 
-   Each `sponsorGoal` covers the full first-year cost of that room:
-   12 months of rent + a 3-month security deposit = 15 × monthlyRent. */
-const MONTHS_TO_FUND = 15 // 12 months rent + 3 months deposit (Kaution)
-const fullYearWithDeposit = (monthlyRent: number) =>
-  monthlyRent * MONTHS_TO_FUND
+   Each `sponsorGoal` is the Jahres-Warmmiete brutto (Row 22 of the
+   Kostenaufstellung). monthlyRent is Warmmiete/Monat brutto (Row 16). */
+
+/** 3 × Kaltmiete netto for all 5 rooms (ohne MwSt). Fundraising step 0. */
+export const KAUTION = 15_536.01
 
 export const ROOMS: Room[] = [
   {
@@ -223,8 +225,8 @@ export const ROOMS: Room[] = [
     name: "Common Space",
     type: "Title Room",
     sqm: 56.04,
-    monthlyRent: 1337.11,
-    sponsorGoal: fullYearWithDeposit(1337.11),
+    monthlyRent: 1591.16,
+    sponsorGoal: 19_093.93,
     sponsors: [
       { name: "Thomas", amount: 10_000 },
       { name: "Alumni Association", amount: 5_000 },
@@ -237,8 +239,8 @@ export const ROOMS: Room[] = [
     name: "Coworking",
     type: "Title Room",
     sqm: 56.72,
-    monthlyRent: 1353.34,
-    sponsorGoal: fullYearWithDeposit(1353.34),
+    monthlyRent: 1610.47,
+    sponsorGoal: 19_325.70,
     sponsors: [{ name: "Lio", amount: 16_240 }],
     order: 2,
     imagePlaceholder: "/office/room2.jpg",
@@ -248,8 +250,8 @@ export const ROOMS: Room[] = [
     name: "Deep Work / Focus",
     type: "Title Room",
     sqm: 42.12,
-    monthlyRent: 1004.98,
-    sponsorGoal: fullYearWithDeposit(1004.98),
+    monthlyRent: 1195.93,
+    sponsorGoal: 14_351.11,
     sponsors: [],
     order: 3,
     imagePlaceholder: "/office/room3.jpg",
@@ -259,8 +261,8 @@ export const ROOMS: Room[] = [
     name: "Meeting Rooms",
     type: "Meeting Room",
     sqm: 52.44,
-    monthlyRent: 1251.21,
-    sponsorGoal: fullYearWithDeposit(1251.21),
+    monthlyRent: 1488.94,
+    sponsorGoal: 17_867.28,
     sponsors: [],
     order: 4,
     imagePlaceholder: "/office/room4.jpg",
@@ -270,8 +272,8 @@ export const ROOMS: Room[] = [
     name: "Incubation Space",
     type: "Title Room",
     sqm: 53.44,
-    monthlyRent: 1275.07,
-    sponsorGoal: fullYearWithDeposit(1275.07),
+    monthlyRent: 1517.33,
+    sponsorGoal: 18_208.00,
     sponsors: [{ name: "Adrian", amount: 10_000 }],
     order: 5,
     imagePlaceholder: "/office/room5.jpg",
@@ -280,7 +282,8 @@ export const ROOMS: Room[] = [
 
 export const TOTAL_MONTHLY_RENT = ROOMS.reduce((s, r) => s + r.monthlyRent, 0)
 
-export const FUNDRAISING_GOAL = ROOMS.reduce((s, r) => s + r.sponsorGoal, 0)
+export const FUNDRAISING_GOAL =
+  KAUTION + ROOMS.reduce((s, r) => s + r.sponsorGoal, 0)
 
 export const ADDITIONAL_ROOMS = [
   { id: 3, sqm: 56.10, monthlyRent: 1338.54 },

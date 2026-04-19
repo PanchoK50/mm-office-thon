@@ -67,7 +67,7 @@ export function HeroProgressCard({
 
       <NextMilestoneHeadline
         percent={nextPct}
-        label={nextMilestone?.label ?? "Kaution"}
+        label={nextMilestone?.label ?? "Complete"}
         raisedTowardNext={raisedTowardNext}
         goalOfNext={goalOfNext}
         allDone={nextIdx === -1}

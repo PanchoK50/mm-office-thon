@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { ROOMS } from "@/lib/constants"
+import { ROOMS, KAUTION } from "@/lib/constants"
 import { formatEUR, cn } from "@/lib/utils"
 import { ImageIcon, Lock, CheckCircle2 } from "lucide-react"
 
@@ -32,9 +32,11 @@ export function RoomProgressSection({ totalRaised }: { totalRaised: number }) {
         )}
       >
         {sortedRooms.map((room, index) => {
-          const cumulativeBefore = sortedRooms
-            .slice(0, index)
-            .reduce((s, r) => s + r.sponsorGoal, 0)
+          const cumulativeBefore =
+            KAUTION +
+            sortedRooms
+              .slice(0, index)
+              .reduce((s, r) => s + r.sponsorGoal, 0)
           const raised = Math.max(
             0,
             Math.min(room.sponsorGoal, totalRaised - cumulativeBefore)
@@ -112,7 +114,7 @@ export function RoomProgressSection({ totalRaised }: { totalRaised: number }) {
                     {" "}/month
                   </p>
                   <p className="text-[10px] text-muted-foreground/70">
-                    + 3 month deposit
+                    inkl. 19% MwSt
                   </p>
                 </div>
 

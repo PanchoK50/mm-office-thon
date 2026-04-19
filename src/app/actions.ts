@@ -10,6 +10,7 @@ export async function createDonation(input: {
   telephone: string
   amount: number
   generation: string
+  reference_code: string
   message?: string
   commitment_type?: 'transfer' | 'loi'
   screenshot_url?: string
@@ -71,8 +72,13 @@ export async function createDonation(input: {
       }
     }
 
-    // Generate reference code
-    const referenceCode = `MM-${Date.now()}`
+    // Validate reference code
+    if (!input.reference_code || !input.reference_code.startsWith('Manage and More Büro spende ')) {
+      return {
+        success: false,
+        error: 'Invalid reference code',
+      }
+    }
 
     // Insert donation
     const { data, error } = await supabase
@@ -86,11 +92,19 @@ export async function createDonation(input: {
         status: 'pending',
         commitment_type: input.commitment_type ?? 'transfer',
         screenshot_url: input.screenshot_url ?? null,
+        reference_code: input.reference_code,
       } as DonationInsert)
       .select('id')
       .single()
 
     if (error) {
+      // Handle unique constraint violation
+      if (error.code === '23505') {
+        return {
+          success: false,
+          error: 'Reference code collision — please try again',
+        }
+      }
       return {
         success: false,
         error: `Failed to create donation: ${error.message}`,
@@ -103,7 +117,7 @@ export async function createDonation(input: {
     return {
       success: true,
       donationId: data.id,
-      referenceCode,
+      referenceCode: input.reference_code,
     }
   } catch (err) {
     return {

@@ -16,6 +16,7 @@ export type Donation = {
   screenshot_url: string | null
   status: 'pending' | 'confirmed' | 'rejected'
   commitment_type: 'transfer' | 'loi'
+  reference_code: string
 }
 
 export type DonationInsert = Omit<Donation, 'id' | 'created_at'>

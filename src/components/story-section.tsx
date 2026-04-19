@@ -7,11 +7,11 @@ export function StorySection() {
         </h2>
         <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
         
-          <p>
+          {/* <p>
             This changes with this office at{" "}
             <span className="font-semibold text-foreground">Kunstlabor München</span>.
            
-          </p>
+          </p> */}
           <ul className="space-y-2 pt-1">
             <li className="flex items-start gap-3">
               <span

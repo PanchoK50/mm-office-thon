@@ -228,8 +228,8 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
       return
     }
 
-    // Generate reference code client-side for display only
-    setReferenceCode(`MM-${Date.now()}`)
+    const uid = crypto.randomUUID().replace(/-/g, "").slice(0, 6).toUpperCase()
+    setReferenceCode(`Manage and More Büro spende ${uid}`)
     setStep(3)
   }
 
@@ -295,6 +295,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
       telephone: telephone.trim(),
       amount,
       generation,
+      reference_code: referenceCode,
       message: donorMessage || undefined,
       commitment_type: commitmentType,
       screenshot_url: screenshotUrl,
@@ -611,7 +612,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
             <div className="space-y-2 rounded-lg border border-border bg-muted/40 p-4 text-sm">
               <Row label="Account holder" value={BANK_DETAILS.accountHolder} />
               <Row label="IBAN" value={BANK_DETAILS.iban} mono />
-              <Row label="Reference code" value={referenceCode} mono />
+              <Row label="Reference" value={referenceCode} />
               <Row label="Amount" value={formatEUR(amount)} emphasis />
             </div>
 
