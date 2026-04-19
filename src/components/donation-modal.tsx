@@ -31,7 +31,7 @@ const MAX_NAME_LENGTH = 100
 const MAX_TELEPHONE_LENGTH = 32
 const MAX_TAGLINE_LENGTH = 120
 const MAX_FILE_SIZE = 5 * 1024 * 1024
-const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"]
+const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "image/webp", "application/pdf"]
 
 const LOI_DEADLINE_LABEL = "Friday, 24 April 2026"
 
@@ -239,8 +239,8 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
 
     setUploadError("")
 
-    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-      setUploadError("Only JPEG, PNG, or WebP images are allowed")
+    if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+      setUploadError("Only JPEG, PNG, WebP images or PDF files are allowed")
       e.target.value = ""
       return
     }
@@ -631,14 +631,14 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                 label={
                   isPending && confirmationMethod === null
                     ? "Uploading..."
-                    : "Upload transfer screenshot"
+                    : "Upload screenshot or PDF"
                 }
                 chosen={confirmationMethod === "upload"}
                 as="label"
               >
                 <input
                   type="file"
-                  accept="image/jpeg,image/png,image/webp"
+                  accept="image/jpeg,image/png,image/webp,application/pdf"
                   onChange={handleFileSelect}
                   className="sr-only"
                   disabled={isPending}

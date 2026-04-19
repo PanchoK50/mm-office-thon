@@ -137,8 +137,8 @@ export async function uploadScreenshot(
       return { success: false, error: 'File is required' }
     }
 
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-      return { success: false, error: 'Only JPEG, PNG, or WebP images are allowed' }
+    if (!['image/jpeg', 'image/png', 'image/webp', 'application/pdf'].includes(file.type)) {
+      return { success: false, error: 'Only JPEG, PNG, WebP images or PDF files are allowed' }
     }
 
     if (file.size > 5 * 1024 * 1024) {
