@@ -87,8 +87,8 @@ export function HeroSection({ cardData }: HeroSectionProps) {
         <div className="mx-auto max-w-[1440px] px-6 py-12 sm:py-16 lg:pl-24 lg:pr-[456px]">
           <iframe
             className="block aspect-video w-full border-0 bg-black"
-            src="https://drive.google.com/file/d/1R4PnFAcEkt0ZDjw7D0_rq12c5fDHxIIl/preview"
-            allow="autoplay"
+            src="https://player.vimeo.com/video/1184616655?badge=0&autopause=0&player_id=0&app_id=58479"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
             allowFullScreen
             title="Tour of the new Manage and More office at Kunstlabor"
           />
