@@ -274,41 +274,48 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
     setUploadError("")
     setIsPending(true)
 
-    let screenshotUrl: string | undefined
+    try {
+      let screenshotUrl: string | undefined
 
-    if (screenshotFile) {
-      const formData = new FormData()
-      formData.append("file", screenshotFile)
-      const uploadResult = await uploadScreenshot(formData)
-      if (!uploadResult.success) {
-        setUploadError(uploadResult.error)
+      if (screenshotFile) {
+        const formData = new FormData()
+        formData.append("file", screenshotFile)
+        const uploadResult = await uploadScreenshot(formData)
+        if (!uploadResult.success) {
+          setUploadError(uploadResult.error)
+          setIsPending(false)
+          return
+        }
+        screenshotUrl = uploadResult.url
+      }
+
+      const commitmentType = confirmationMethod === "loi" ? "loi" : "transfer"
+
+      const result = await createDonation({
+        donor_name: donorName.trim(),
+        telephone: telephone.trim(),
+        amount,
+        generation,
+        reference_code: referenceCode,
+        message: donorMessage || undefined,
+        commitment_type: commitmentType,
+        screenshot_url: screenshotUrl,
+      })
+
+      if (!result.success) {
+        setUploadError(result.error)
         setIsPending(false)
         return
       }
-      screenshotUrl = uploadResult.url
-    }
 
-    const commitmentType = confirmationMethod === "loi" ? "loi" : "transfer"
-
-    const result = await createDonation({
-      donor_name: donorName.trim(),
-      telephone: telephone.trim(),
-      amount,
-      generation,
-      reference_code: referenceCode,
-      message: donorMessage || undefined,
-      commitment_type: commitmentType,
-      screenshot_url: screenshotUrl,
-    })
-
-    if (!result.success) {
-      setUploadError(result.error)
       setIsPending(false)
-      return
+      setStep(4)
+    } catch {
+      setUploadError(
+        "Something went wrong. Please try again or use a smaller file (max 5 MB)."
+      )
+      setIsPending(false)
     }
-
-    setIsPending(false)
-    setStep(4)
   }
 
   async function handleCopyIBAN() {
