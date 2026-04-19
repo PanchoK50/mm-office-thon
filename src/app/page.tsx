@@ -174,6 +174,8 @@ export default async function Home() {
       <MobileStickyFooter
         percent={cardData.nextMilestonePercent}
         label={cardData.nextMilestoneLabel}
+        totalRaised={cardData.totalRaised}
+        totalGoal={cardData.totalGoal}
       />
     </main>
   )

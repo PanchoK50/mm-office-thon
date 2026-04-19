@@ -10,12 +10,15 @@ const TRACK = "#f3f4f6"
 interface MobileStickyFooterProps {
   percent: number
   label: string
+  totalRaised: number
+  totalGoal: number
 }
 
-export function MobileStickyFooter({ percent, label }: MobileStickyFooterProps) {
+export function MobileStickyFooter({ percent, label, totalRaised, totalGoal }: MobileStickyFooterProps) {
   const [visible, setVisible] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [animated, setAnimated] = useState(0)
+  const totalPct = Math.min(100, Math.round((totalRaised / totalGoal) * 100))
 
   useEffect(() => {
     const onScroll = () => {
@@ -44,6 +47,24 @@ export function MobileStickyFooter({ percent, label }: MobileStickyFooterProps) 
           visible ? "translate-y-0" : "translate-y-full"
         }`}
       >
+        <div
+          className="absolute inset-x-0 top-0 h-[3px]"
+          style={{ backgroundColor: TRACK }}
+          role="progressbar"
+          aria-valuenow={totalPct}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`${totalPct}% of total goal raised`}
+        >
+          <div
+            className="h-full transition-[width] duration-1000 ease-out"
+            style={{
+              width: visible ? `${totalPct}%` : "0%",
+              backgroundColor: GREEN,
+            }}
+          />
+        </div>
+
         <div className="mx-auto flex max-w-md items-center gap-3">
           <div className="flex items-center gap-2.5 shrink-0">
             <div
@@ -84,11 +105,14 @@ export function MobileStickyFooter({ percent, label }: MobileStickyFooterProps) 
               </div>
             </div>
             <div className="min-w-0">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground leading-tight">
-                Next milestone
+              <p className="text-[10px] font-medium tabular-nums text-muted-foreground leading-tight">
+                Total raised · {totalPct}%
               </p>
               <p className="text-xs font-bold text-foreground truncate leading-tight mt-0.5">
                 {label}
+                <span className="ml-1 text-[10px] font-semibold tabular-nums text-muted-foreground">
+                  · {Math.round(percent)}%
+                </span>
               </p>
             </div>
           </div>

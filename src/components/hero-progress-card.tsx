@@ -252,24 +252,55 @@ function TotalSummary({
   totalRaised: number
   totalGoal: number
 }) {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    const t = setTimeout(() => setMounted(true), 80)
+    return () => clearTimeout(t)
+  }, [])
+
+  const pct = Math.min(100, Math.round((totalRaised / totalGoal) * 100))
+
   return (
-    <div className="flex items-center justify-between gap-3 rounded-lg border border-border/60 bg-muted/30 px-3 py-2.5">
-      <div className="min-w-0">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-          Total raised
-        </p>
-        <p className="mt-0.5 text-sm font-bold tabular-nums text-foreground">
-          {formatEUR(totalRaised)}
-        </p>
+    <div className="rounded-lg border border-border/60 bg-muted/30 px-3 py-2.5">
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+            Total raised
+          </p>
+          <p className="mt-0.5 text-sm font-bold tabular-nums text-foreground">
+            {formatEUR(totalRaised)}
+          </p>
+        </div>
+        <div className="min-w-0 text-right">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+            Total needed
+          </p>
+          <p className="mt-0.5 text-sm font-bold tabular-nums text-foreground">
+            {formatEUR(totalGoal)}
+          </p>
+        </div>
       </div>
-      <div className="min-w-0 text-right">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-          Total needed
-        </p>
-        <p className="mt-0.5 text-sm font-bold tabular-nums text-foreground">
-          {formatEUR(totalGoal)}
-        </p>
+
+      <div
+        className="relative mt-2.5 h-1.5 w-full overflow-hidden rounded-full"
+        style={{ backgroundColor: TRACK }}
+        role="progressbar"
+        aria-valuenow={pct}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label={`${pct}% of total goal raised`}
+      >
+        <div
+          className="h-full rounded-full transition-[width] duration-1000 ease-out"
+          style={{
+            width: mounted ? `${pct}%` : "0%",
+            backgroundColor: GREEN,
+          }}
+        />
       </div>
+      <p className="mt-1 text-right text-[10px] font-medium tabular-nums text-muted-foreground">
+        {pct}%
+      </p>
     </div>
   )
 }
