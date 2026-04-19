@@ -601,10 +601,8 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                 aria-hidden="true"
               />
               <p className="text-foreground">
-                <span className="font-semibold">Use Instant Transfer.</span>{" "}
-                It&apos;s free for almost every German bank, credits within
-                seconds, and that momentum makes a real difference for the
-                campaign.
+                <span className="font-semibold">Thomas bank doesn't accept instant transfer, please use direct transfer.</span>
+           
               </p>
             </div>
 
