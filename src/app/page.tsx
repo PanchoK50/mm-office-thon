@@ -142,9 +142,6 @@ export default async function Home() {
         <hr className="divider-fade mx-6 lg:mx-24" />
       </div>
 
-      {/* RoomProgressSection renders full-width so its horizontal scroll row
-          can bleed under the floating card on lg+. Its heading block applies
-          its own lg:pr so the heading still aligns with the other sections. */}
       <RoomProgressSection totalRaised={cardData.totalRaised} />
 
       {/* Post-rooms sections go back inside the safe zone. */}

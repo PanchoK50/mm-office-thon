@@ -18,19 +18,15 @@ export function RoomProgressSection({ totalRaised }: { totalRaised: number }) {
         </p>
       </div>
 
-      {/* Scroll row — full viewport width. On lg+ its right padding is wider
-          than the floating progress card so the last card can scroll under
-          the card cleanly. Left padding matches the heading + section text
-          (px-6 inside the centered max-w-[1440px] container) so card #1
-          lines up with the heading and the body text above. */}
-      <div
-        className={cn(
-          "flex snap-x snap-proximity gap-4 overflow-x-auto scroll-smooth pb-6",
-          "pl-6 pr-6 scroll-pl-6",
-          "lg:pl-[max(6rem,calc((100vw-1440px)/2+6rem))] lg:pr-[480px]",
-          "lg:scroll-pl-[max(6rem,calc((100vw-1440px)/2+6rem))]"
-        )}
-      >
+      {/* Scroll row — constrained to the safe zone like sibling sections */}
+      <div className="mx-auto max-w-[1440px] lg:pr-[456px]">
+        <div
+          className={cn(
+            "flex snap-x snap-proximity gap-4 overflow-x-auto scroll-smooth pb-6",
+            "pl-6 pr-6 scroll-pl-6",
+            "lg:pl-24 lg:pr-6 lg:scroll-pl-24"
+          )}
+        >
         {/* Step 0 — Kaution card */}
         {(() => {
           const kautionRaised = Math.max(0, Math.min(KAUTION, totalRaised))
@@ -276,6 +272,7 @@ export function RoomProgressSection({ totalRaised }: { totalRaised: number }) {
             </div>
           )
         })}
+        </div>
       </div>
     </section>
   )
