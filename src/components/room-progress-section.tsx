@@ -14,7 +14,7 @@ export function RoomProgressSection({ totalRaised }: { totalRaised: number }) {
           Office Loading...
         </h2>
         <p className="mt-2 text-muted-foreground">
-          Unlock rooms as we hit our funding goals
+          We're raising the funds to finance the office for 1 year. 
         </p>
       </div>
 

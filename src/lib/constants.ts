@@ -18,6 +18,7 @@ export const BANK_DETAILS = {
   accountNumber: "1050692621 (EUR)",
   iban: "DE46 3003 0900 1050 6926 21",
   bic: "MEFIDEMM300",
+  reference: "Spende Manage and More Büro"
 } as const
 
 /* ---------------- Contribution tiers (donation modal) ---------------- */

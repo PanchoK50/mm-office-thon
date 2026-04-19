@@ -618,7 +618,8 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
               <Row label="Account number" value={BANK_DETAILS.accountNumber} mono />
               <Row label="IBAN" value={BANK_DETAILS.iban} mono />
               <Row label="BIC" value={BANK_DETAILS.bic} mono />
-              <Row label="Reference" value={referenceCode} mono />
+              <Row label="Reference" value={BANK_DETAILS.reference} />
+              <Row label="Reference code" value={referenceCode} mono />
               {derivedTier && <Row label="Tier" value={tierLabel} />}
               <Row label="Amount" value={formatEUR(amount)} emphasis />
             </div>

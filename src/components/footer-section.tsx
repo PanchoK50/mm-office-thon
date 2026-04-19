@@ -38,6 +38,8 @@ export function FooterSection() {
             <dd className="font-mono">{BANK_DETAILS.iban}</dd>
             <dt className="text-muted-foreground">BIC</dt>
             <dd className="font-mono">{BANK_DETAILS.bic}</dd>
+            <dt className="text-muted-foreground">Reference</dt>
+            <dd className="font-medium">{BANK_DETAILS.reference}</dd>
           </dl>
         </div>
 
