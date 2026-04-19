@@ -69,8 +69,8 @@ export function ScoreboardSection({ donations }: { donations: Donation[] }) {
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5">
-                      <p className="truncate text-sm font-semibold">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <p className="text-sm font-semibold">
                         {d.donor_name}
                       </p>
                       {d.generation && (
@@ -89,7 +89,7 @@ export function ScoreboardSection({ donations }: { donations: Donation[] }) {
                       )}
                     </div>
                     {d.message && (
-                      <p className="truncate text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground">
                         &ldquo;{d.message}&rdquo;
                       </p>
                     )}
