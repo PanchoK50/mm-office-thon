@@ -47,8 +47,8 @@ export function StorySection() {
                 <span className="font-semibold text-foreground">
                   A stage for our events.
                 </span>{" "}
-                Workshops, Pitch Nights and even the Semester
-                Opening Party hosted in a space that&apos;s actually ours.
+                Workshops, Pitch Nights and even the Demo Day
+                hosted in a space that&apos;s actually ours.
               </span>
             </li>
           </ul>
