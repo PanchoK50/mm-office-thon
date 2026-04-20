@@ -1,22 +1,44 @@
 import type { Donation } from "@/lib/supabase"
-import { formatEUR } from "@/lib/utils"
-import { Trophy, Medal, Award, Heart } from "lucide-react"
+import { Heart } from "lucide-react"
+import { DonorRow, type GroupedDonor } from "@/components/donor-row"
 
-const rankIcons = [Trophy, Medal, Award]
+function groupKey(d: Donation): string {
+  return `${d.donor_name.trim().toLowerCase()}::${(d.generation ?? "").trim().toLowerCase()}`
+}
 
-function timeAgo(dateStr: string) {
-  const s = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000)
-  if (s < 60) return "just now"
-  if (s < 3600) return `${Math.floor(s / 60)}m ago`
-  if (s < 86400) return `${Math.floor(s / 3600)}h ago`
-  return `${Math.floor(s / 86400)}d ago`
+function groupDonations(donations: Donation[]): GroupedDonor[] {
+  const map = new Map<string, Donation[]>()
+  for (const d of donations) {
+    const key = groupKey(d)
+    const list = map.get(key)
+    if (list) list.push(d)
+    else map.set(key, [d])
+  }
+
+  return Array.from(map.entries()).map(([key, donations]) => {
+    const sorted = [...donations].sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    )
+    const latest = sorted[0]
+    return {
+      groupKey: key,
+      donorName: latest.donor_name,
+      generation: latest.generation,
+      totalAmount: donations.reduce((sum, d) => sum + d.amount, 0),
+      hasConfirmed: donations.some((d) => d.status === "confirmed"),
+      latestCreatedAt: latest.created_at,
+      donations: sorted,
+    }
+  })
 }
 
 export function ScoreboardSection({ donations }: { donations: Donation[] }) {
-  const pending = donations.filter((d) => d.amount === 0)
-  const ranked = donations
-    .filter((d) => d.amount !== 0)
-    .sort((a, b) => b.amount - a.amount)
+  const groups = groupDonations(donations)
+  const pending = groups.filter((g) => g.totalAmount === 0)
+  const ranked = groups
+    .filter((g) => g.totalAmount !== 0)
+    .sort((a, b) => b.totalAmount - a.totalAmount)
   const sorted = [...ranked, ...pending]
 
   return (
@@ -35,81 +57,14 @@ export function ScoreboardSection({ donations }: { donations: Donation[] }) {
           </div>
         ) : (
           <div className="space-y-2">
-            {sorted.map((d, i) => {
-              const isPending = d.amount === 0
-              const rank = isPending ? -1 : i
-              const Icon = isPending ? null : (rankIcons[rank] ?? null)
+            {sorted.map((group, i) => {
+              const rank = group.totalAmount === 0 ? -1 : i
               return (
-                <div
-                  key={d.id}
-                  className={`flex items-center gap-3 rounded-xl border px-4 py-3 ${
-                    isPending
-                      ? "border-sky-500/30 bg-sky-500/5"
-                      : rank < 3
-                        ? "border-accent/20 bg-accent/5"
-                        : "border-border bg-card"
-                  }`}
-                >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary text-xs font-bold text-muted-foreground">
-                    {isPending ? (
-                      <span className="text-sky-600 dark:text-sky-400">?</span>
-                    ) : Icon ? (
-                      <Icon
-                        className={`h-4 w-4 ${
-                          rank === 0
-                            ? "text-yellow-500"
-                            : rank === 1
-                              ? "text-gray-400"
-                              : "text-amber-600"
-                        }`}
-                      />
-                    ) : (
-                      <span>#{rank + 1}</span>
-                    )}
-                  </div>
-
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <p className="text-sm font-semibold">
-                        {d.donor_name}
-                      </p>
-                      {d.generation && (
-                        <span className="shrink-0 rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
-                          {d.generation}
-                        </span>
-                      )}
-                      {d.status === "confirmed" ? (
-                        <span className="shrink-0 rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
-                          received
-                        </span>
-                      ) : (
-                        <span className="shrink-0 rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-600 dark:text-amber-400">
-                          committed
-                        </span>
-                      )}
-                    </div>
-                    {d.message && (
-                      <p className="text-xs text-muted-foreground">
-                        &ldquo;{d.message}&rdquo;
-                      </p>
-                    )}
-                  </div>
-
-                   <div className="text-right">
-                     <p
-                       className={`text-sm font-bold ${
-                         isPending
-                           ? "text-sky-600 dark:text-sky-400"
-                           : "text-accent"
-                       }`}
-                     >
-                       {isPending ? "? €" : formatEUR(d.amount)}
-                     </p>
-                     <p className="text-[11px] text-muted-foreground/60">
-                       {timeAgo(d.created_at)}
-                     </p>
-                   </div>
-                </div>
+                <DonorRow
+                  key={group.groupKey}
+                  group={group}
+                  rank={rank}
+                />
               )
             })}
           </div>
