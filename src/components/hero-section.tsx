@@ -13,6 +13,7 @@ interface HeroSectionProps {
   cardData: {
     totalRaised: number
     totalGoal: number
+    baseGoal: number
     milestones: HeroMilestone[]
     recentDonations: HeroDonation[]
     generationTotals: HeroGenerationTotal[]
