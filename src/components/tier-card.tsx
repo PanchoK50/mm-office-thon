@@ -6,6 +6,7 @@ import {
   Frame,
   Fingerprint,
   Sparkles,
+  LayoutDashboard,
 } from "lucide-react"
 import {
   CONTRIBUTION_TIERS,
@@ -118,6 +119,7 @@ export const HEADLINE_ICON: Record<
   community: Users,
   office: Briefcase,
   meeting: MessagesSquare,
+  workspace: LayoutDashboard,
   photo: Frame,
   wall: Fingerprint,
 }
@@ -138,8 +140,7 @@ export function TierCard({
 }) {
   const theme = TIER_THEME[tier.id]
   const HeadlineIcon = HEADLINE_ICON[tier.headline.icon]
-  const priceLabel =
-    tier.id === "founding" ? `${formatEUR(tier.price)}+` : formatEUR(tier.price)
+  const priceLabel = formatEUR(tier.price)
   const interactive = Boolean(onSelect)
 
   return (

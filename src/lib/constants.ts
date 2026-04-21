@@ -35,7 +35,7 @@ export type ContributionTier = {
   /** The distinctive benefit, surfaced as a hero callout on the card. */
   headline: {
     /** Which icon to pair with the hero callout. */
-    icon: "community" | "office" | "meeting" | "photo" | "wall"
+    icon: "community" | "office" | "meeting" | "workspace" | "photo" | "wall"
     /** Optional size label shown as a prominent pill (e.g. "50+ sqm"). */
     size?: string
     /** Primary hero line — should differ across tiers to aid scanning. */
@@ -70,10 +70,13 @@ export const CONTRIBUTION_TIERS: ContributionTier[] = [
     name: "Founding Member",
     price: 1_000,
     headline: {
-      icon: "photo",
-      title: "Your photo on the Founding Member wall",
+      icon: "workspace",
+      size: "~2 sqm",
+      title: "Workspace",
+      subtitle: "Branded after your startup / choice",
     },
     benefits: [
+      "Photo on the Founding Member wall",
       "Fingerprint in black with name & generation on the Wall of Fame",
     ],
   },
