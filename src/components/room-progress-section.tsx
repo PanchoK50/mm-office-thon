@@ -14,7 +14,7 @@ export function RoomProgressSection({ totalRaised }: { totalRaised: number }) {
           Office Loading...
         </h2>
         <p className="mt-2 text-muted-foreground">
-          We're raising the funds to finance the office for 1 year.
+          We&apos;re raising the funds to finance the office for 1 year.
         </p>
       </div>
 
@@ -139,6 +139,7 @@ export function RoomProgressSection({ totalRaised }: { totalRaised: number }) {
         })()}
 
         {sortedRooms.map((room, index) => {
+          const isFurnitureExtension = room.name === "Furniture and Set Up"
           const cumulativeBefore =
             KAUTION +
             sortedRooms
@@ -201,28 +202,36 @@ export function RoomProgressSection({ totalRaised }: { totalRaised: number }) {
               <div className="flex flex-1 flex-col gap-3 p-4">
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                    Room {room.id}
+                    {isFurnitureExtension ? "Beyond Goal" : `Room ${room.id}`}
                   </p>
                   <h3 className="text-sm font-bold leading-tight">
                     {room.name}
                   </h3>
                   <div className="mt-1.5 flex flex-wrap gap-1">
                     <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] text-muted-foreground">
-                      {room.sqm} m²
+                      {isFurnitureExtension ? "Extension" : `${room.sqm} m²`}
                     </span>
                   </div>
                 </div>
 
                 <div>
-                  <p className="text-xs text-muted-foreground">
-                    <span className="text-sm font-semibold text-foreground">
-                      {formatEUR(room.monthlyRent)}
-                    </span>
-                    {" "}/month
-                  </p>
-                  <p className="text-[10px] text-muted-foreground/70">
-                    inkl. 19% MwSt
-                  </p>
+                  {isFurnitureExtension ? (
+                    <p className="text-xs text-muted-foreground">
+                      Stretch target to take the office setup above and beyond.
+                    </p>
+                  ) : (
+                    <>
+                      <p className="text-xs text-muted-foreground">
+                        <span className="text-sm font-semibold text-foreground">
+                          {formatEUR(room.monthlyRent)}
+                        </span>
+                        {" "}/month
+                      </p>
+                      <p className="text-[10px] text-muted-foreground/70">
+                        inkl. 19% MwSt
+                      </p>
+                    </>
+                  )}
                 </div>
 
                 <div className="mt-auto pt-1">

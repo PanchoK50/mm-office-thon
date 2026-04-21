@@ -18,6 +18,7 @@ import {
   type HeroGenerationTotal,
 } from "@/components/hero-progress-card"
 import { MobileStickyFooter } from "@/components/mobile-sticky-footer"
+import Confetti from "@/components/ui/confetti"
 
 export const revalidate = 60
 
@@ -25,6 +26,7 @@ const SHORT_LABELS: Record<string, string> = {
   "Deep Work / Focus": "Deep Work",
   "Incubation Space": "Incubation",
   "Meeting Rooms": "Meeting Rooms",
+  "Furniture and Set Up": "Furniture",
 }
 
 async function getDonations(): Promise<Donation[]> {
@@ -38,6 +40,7 @@ async function getDonations(): Promise<Donation[]> {
 type CardData = {
   totalRaised: number
   totalGoal: number
+  baseGoal: number
   milestones: HeroMilestone[]
   recentDonations: HeroDonation[]
   generationTotals: HeroGenerationTotal[]
@@ -48,6 +51,12 @@ type CardData = {
 function buildCardData(
   stats: Awaited<ReturnType<typeof getDonationStats>>
 ): CardData {
+  const baseGoal =
+    KAUTION +
+    ROOMS.filter((room) => room.name !== "Furniture and Set Up").reduce(
+      (s, r) => s + r.sponsorGoal,
+      0
+    )
   const kautionRaised = Math.max(0, Math.min(KAUTION, stats.total))
   const kautionMilestone: HeroMilestone = {
     label: "Kaution",
@@ -99,6 +108,7 @@ function buildCardData(
   return {
     totalRaised: stats.total,
     totalGoal: FUNDRAISING_GOAL,
+    baseGoal,
     milestones,
     recentDonations,
     generationTotals,
@@ -154,6 +164,9 @@ export default async function Home() {
 
         <FooterSection />
       </div>
+
+      {/* Above page backgrounds, below the fixed donation aside (z-30). */}
+      <Confetti autoPlay loop zIndex={25} />
 
       {/* Progress panel — fixed to the viewport on lg+ so it is always
           visible regardless of scroll position. Pinned to the right edge of

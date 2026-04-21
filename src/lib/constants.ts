@@ -281,6 +281,17 @@ export const ROOMS: Room[] = [
     order: 5,
     imagePlaceholder: "/office/room5.jpg",
   },
+  {
+    id: 20,
+    name: "Furniture and Set Up",
+    type: "Extension",
+    sqm: 0,
+    monthlyRent: 0,
+    sponsorGoal: 30_000,
+    sponsors: [],
+    order: 6,
+    imagePlaceholder: "/office/Common.png",
+  },
 ]
 
 export const TOTAL_MONTHLY_RENT = ROOMS.reduce((s, r) => s + r.monthlyRent, 0)

@@ -11,6 +11,8 @@ import { DonationModal } from "@/components/donation-modal"
 const GREEN = "#34d399"        // emerald-400
 const GREEN_FILL = "rgba(52, 211, 153, 0.28)"
 const TRACK = "#f3f4f6"        // gray-100 — neutral
+/** Stretch segment — brand cyan so it never reads as red/orange. */
+const STRETCH = "#00a2cc"
 
 export type HeroMilestone = {
   label: string
@@ -34,6 +36,7 @@ export type HeroGenerationTotal = {
 interface HeroProgressCardProps {
   totalRaised: number
   totalGoal: number
+  baseGoal: number
   milestones: HeroMilestone[]
   recentDonations: HeroDonation[]
   generationTotals: HeroGenerationTotal[]
@@ -42,6 +45,7 @@ interface HeroProgressCardProps {
 export function HeroProgressCard({
   totalRaised,
   totalGoal,
+  baseGoal,
   milestones,
   recentDonations,
   generationTotals,
@@ -73,7 +77,7 @@ export function HeroProgressCard({
         allDone={nextIdx === -1}
       />
 
-      <TotalSummary totalRaised={totalRaised} totalGoal={totalGoal} />
+      <TotalSummary totalRaised={totalRaised} totalGoal={totalGoal} baseGoal={baseGoal} />
 
       <ActionButtons onSupport={() => setModalOpen(true)} />
 
@@ -248,9 +252,11 @@ function CircularProgress({
 function TotalSummary({
   totalRaised,
   totalGoal,
+  baseGoal,
 }: {
   totalRaised: number
   totalGoal: number
+  baseGoal: number
 }) {
   const [mounted, setMounted] = useState(false)
   useEffect(() => {
@@ -258,48 +264,96 @@ function TotalSummary({
     return () => clearTimeout(t)
   }, [])
 
-  const pct = Math.min(100, Math.round((totalRaised / totalGoal) * 100))
+  const stretchGoal = Math.max(0, totalGoal - baseGoal)
+  const pctOfTarget = (totalRaised / Math.max(baseGoal, 1)) * 100
+  const officeFill = Math.min(100, (totalRaised / Math.max(baseGoal, 1)) * 100)
+  const stretchRaised = Math.max(0, totalRaised - baseGoal)
+  const stretchFill =
+    stretchGoal > 0
+      ? Math.min(100, (stretchRaised / stretchGoal) * 100)
+      : 0
+
+  const caption =
+    pctOfTarget > 100
+      ? `${Math.round(pctOfTarget)}% of target already`
+      : `${Math.round(pctOfTarget)}% of target`
 
   return (
-    <div className="rounded-lg border border-border/60 bg-muted/30 px-3 py-2.5">
+    <div className="rounded-lg border border-border/60 bg-muted/30 px-2.5 py-2">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
             Total raised
           </p>
-          <p className="mt-0.5 text-sm font-bold tabular-nums text-foreground">
+          <p className="mt-0.5 text-xs font-bold tabular-nums text-foreground sm:text-sm">
             {formatEUR(totalRaised)}
           </p>
         </div>
         <div className="min-w-0 text-right">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
             Total needed
           </p>
-          <p className="mt-0.5 text-sm font-bold tabular-nums text-foreground">
+          <p className="mt-0.5 text-xs font-bold tabular-nums text-foreground sm:text-sm">
             {formatEUR(totalGoal)}
           </p>
         </div>
       </div>
 
       <div
-        className="relative mt-2.5 h-1.5 w-full overflow-hidden rounded-full"
-        style={{ backgroundColor: TRACK }}
-        role="progressbar"
-        aria-valuenow={pct}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-label={`${pct}% of total goal raised`}
+        className="mt-2.5 flex w-full min-w-0 gap-1"
+        role="group"
+        aria-label="Original target and stretch progress"
       >
         <div
-          className="h-full rounded-full transition-[width] duration-1000 ease-out"
+          className="relative h-1.5 min-w-0 overflow-hidden rounded-full"
           style={{
-            width: mounted ? `${pct}%` : "0%",
-            backgroundColor: GREEN,
+            flex: `${baseGoal} 1 0%`,
+            backgroundColor: TRACK,
           }}
-        />
+        >
+          {officeFill > 0 && (
+            <div
+              className="h-full min-w-0 rounded-full transition-[width] duration-1000 ease-out"
+              style={{
+                width: mounted ? `${officeFill}%` : "0%",
+                backgroundColor: GREEN,
+              }}
+              role="progressbar"
+              aria-valuenow={Math.round(officeFill)}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label="Original target"
+            />
+          )}
+        </div>
+        {stretchGoal > 0 && (
+          <div
+            className="relative h-1.5 min-w-0 overflow-hidden rounded-full"
+            style={{
+              flex: `${stretchGoal} 1 0%`,
+              backgroundColor: TRACK,
+            }}
+          >
+            {stretchFill > 0 && (
+              <div
+                className="h-full min-w-0 rounded-full transition-[width] duration-1000 ease-out"
+                style={{
+                  width: mounted ? `${stretchFill}%` : "0%",
+                  backgroundColor: STRETCH,
+                }}
+                role="progressbar"
+                aria-valuenow={Math.round(stretchFill)}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label="Furniture stretch"
+              />
+            )}
+          </div>
+        )}
       </div>
+
       <p className="mt-1 text-right text-[10px] font-medium tabular-nums text-muted-foreground">
-        {pct}%
+        {caption}
       </p>
     </div>
   )
